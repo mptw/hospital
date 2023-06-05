@@ -1,0 +1,34 @@
+
+/api/auth/register - POST 
+/api/auth/login - POST - връща токен
+
+/api/doctors - GET, POST
+/api/doctors/ward/id - GET array of all doctors in specific ward
+/api/doctors/id -GET, PUT, DELETE
+
+/api/treatments - GET, POST
+/api/treatments/patient/id - GET array of treatments for specific patient
+/api/treatments/id -GET, PUT, DELETE
+
+/api/patients -GET, POST
+/api/patients/doctor/id - GET - array of patients for specific doctor
+/api/patients/ward/id - GET - array of patients for specific wards
+/api/patients/id -GET, PUT, DELETE
+
+/api/appointments -GET, POST
+/api/appointments/patient/id - GET - array of appointments for specific patient
+/api/appointments/doctor/id - GET - array of appointments for specific doctor
+/api/appointments/id -GET, PUT, DELETE
+
+/api/staff -GET, POST
+/api/staff/ward/id -GET - array of staff for specific ward
+/api/staff/id -GET, PUT, DELETE
+
+/api/rooms -GET, POST
+/api/rooms/id -GET, PUT, DELETE
+
+/api/wards -GET, POST
+/api/wards/id -GET, PUT, DELETE
+
+/api/directors -GET, POST
+/api/directors/id -GET, PUT, DELETE
