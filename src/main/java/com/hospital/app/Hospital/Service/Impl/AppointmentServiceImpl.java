@@ -45,6 +45,24 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 
 	@Override
+	public ListResponseDto getAppointments(int pageNo, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNo, pageSize);
+		Page<Appointment> appointmentPage = appointmentRepository.findAll(pageable);
+		List<Appointment> appointments = appointmentPage.getContent();
+		List<AppointmentDto> content = appointments.stream().map(a -> mapToDto(a)).collect(Collectors.toList());
+
+		ListResponseDto appointmentListResponse = new ListResponseDto();
+		appointmentListResponse.setContent(content);
+		appointmentListResponse.setPageNo(appointmentPage.getNumber());
+		appointmentListResponse.setPageSize(appointmentPage.getSize());
+		appointmentListResponse.setTotalElements(appointmentPage.getTotalElements());
+		appointmentListResponse.setTotalPages(appointmentPage.getTotalPages());
+		appointmentListResponse.setLast(appointmentPage.isLast());
+
+		return appointmentListResponse;
+	}
+	
+	@Override
 	public ListResponseDto getAppointmentsWithDoctor(int doctorId, int pageNo, int pageSize) {
 		Pageable pageable = PageRequest.of(pageNo, pageSize);
 		Page<Appointment> appointmentPage = appointmentRepository.findAll(pageable);

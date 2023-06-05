@@ -2,6 +2,8 @@ package com.hospital.app.Hospital.Model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,7 @@ public class Appointment {
 	public int id;
 
 	@Column
+	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
 	private Date date;
 
 	@ManyToOne

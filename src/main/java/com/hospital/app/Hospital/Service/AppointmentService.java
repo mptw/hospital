@@ -8,6 +8,8 @@ public interface AppointmentService {
 	
 	AppointmentDto get(int id) throws EntityNotFoundException;
 	
+	ListResponseDto getAppointments(int pageNo, int pageSize);
+	
 	ListResponseDto getAppointmentsWithDoctor(int doctorId, int pageNo, int pageSize);
 	
 	ListResponseDto getAppointmentsForPatient(int patientId, int pageNo, int pageSize);
@@ -19,5 +21,6 @@ public interface AppointmentService {
 	void delete(int id) throws EntityNotFoundException;
 
 	boolean checkPermissions();
+
 
 }

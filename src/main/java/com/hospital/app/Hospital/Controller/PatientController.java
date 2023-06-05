@@ -58,7 +58,7 @@ public class PatientController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
 
-	@GetMapping(value = "/ward/{doctorId}")
+	@GetMapping(value = "/ward/{wardId}")
 	public ResponseEntity<ListResponseDto> getPatientsByWard(@PathVariable int wardId,
 			@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
 			@RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
