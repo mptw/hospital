@@ -1,6 +1,7 @@
 package com.hospital.app.Hospital.Model;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -25,11 +26,11 @@ public class Treatment {
 	private int id;
 
 	@Column
-	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date startDate;
 
 	@Column
-	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date endDate;
 
 	@Column
@@ -37,11 +38,21 @@ public class Treatment {
 
 	@Column
 	private double totalPrice;
-	
+
+	public double getTotalPrice() {
+		double price = 0;
+		if (startDate != null && endDate != null) {
+			long milliseconds = endDate.getTime() - startDate.getTime();
+			long days = TimeUnit.MILLISECONDS.toDays(milliseconds);
+			price = pricePerDay * days;
+		}
+		return price;
+	}
+
 	@ManyToOne
 	private Patient patient;
-	
+
 	@ManyToOne
 	private Room room;
-	
+
 }
