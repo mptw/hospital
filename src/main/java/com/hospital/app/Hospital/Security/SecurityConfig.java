@@ -17,94 +17,54 @@ public class SecurityConfig {
 
 	public static final long JWT_EXPIRATION = 900000; // 15mins
 	public static final String JWT_SECRET = System.getenv("JWT_SIGNATURE_SECRET");
-	
+
 	private JwtAuthEntryPoint authEntryPoint;
-	
-//	private UserDetailsServiceImpl userDetailsService;
 
-    /*
-	@Autowired
-	public SecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthEntryPoint authEntryPoint) {
-		this.userDetailsService = userDetailsService;
-		this.authEntryPoint = authEntryPoint;
-	}*/
-    /*
-    @Bean
-    public DaoAuthenticationProvider authProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }*/
-    
-	@Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.csrf().disable()
-                .authorizeRequests()
-                .requestMatchers("/login", "/register", "/ui/doctors","/ui/directors","/ui/patients","/ui/wards", "/ui/appointments", "/ui/rooms", "/ui/treatments", "/ui/staff")
-                .permitAll()
-                .and()
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/index")
-                        .loginProcessingUrl("/login")
-                        .failureUrl("/login?error")
-                        .permitAll()
-                ).logout(
-                        logout -> logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
-                );
+	// private UserDetailsServiceImpl userDetailsService;
 
-        return http.build();
-	
-	
-	
-	
-    /*@Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-    	
-    	http.csrf().disable().exceptionHandling().authenticationEntryPoint(authEntryPoint).and().sessionManagement()
-		.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-		.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated().and().httpBasic();
-http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-return http.build();*/
-/*
-        http
-                .csrf().disable()
-                .authorizeHttpRequests((requests) -> requests
-                
-                //hasAnyAuthority('ADMIN','DIRECTOR','DOCTOR')
-                        .requestMatchers("/api/doctors/**").hasAuthority("ADMIN")
-                        .requestMatchers("/api/directors/**").hasAuthority("DIRECTOR")
-                        .requestMatchers("/api/patients/**").hasAuthority("ADMIN")
-                        .anyRequest().authenticated()
-                )
-                .formLogin((form) -> form
-                        .loginPage("/api/auth/login")
-                        .permitAll()
-                )
-                .exceptionHandling().accessDeniedPage("/api/unauthorized")
-                .and()
-                .logout((logout) -> logout.permitAll());
+	/*
+	 * @Autowired public SecurityConfig(CustomUserDetailsService userDetailsService,
+	 * JwtAuthEntryPoint authEntryPoint) { this.userDetailsService =
+	 * userDetailsService; this.authEntryPoint = authEntryPoint; }
+	 */
+	/*
+	 * @Bean public DaoAuthenticationProvider authProvider() {
+	 * DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+	 * authProvider.setUserDetailsService(userService);
+	 * authProvider.setPasswordEncoder(passwordEncoder()); return authProvider; }
+	 */
 
-        return http.build();*/
-    }
-/*
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.csrf().disable().authorizeRequests()
+				.requestMatchers("/login", "/register", "/ui/doctors", "/ui/directors", "/ui/patients", "/ui/wards",
+						"/ui/appointments", "/ui/rooms", "/ui/treatments", "/ui/staff")
+				.permitAll().and()
+				.formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/index").loginProcessingUrl("/login")
+						.failureUrl("/login?error").permitAll())
+				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll());
 
-		http.csrf().disable().authorizeRequests().requestMatchers(HttpMethod.GET).permitAll().anyRequest()
-				.authenticated().and().httpBasic();
 		return http.build();
 
-		/*http.csrf().disable().exceptionHandling().authenticationEntryPoint(authEntryPoint).and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated().and().httpBasic();
-		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-		return http.build();
-	
-	//
-}*/
+	}
+	/*
+	 * @Bean public SecurityFilterChain filterChain(HttpSecurity http) throws
+	 * Exception {
+	 * 
+	 * http.csrf().disable().authorizeRequests().requestMatchers(HttpMethod.GET).
+	 * permitAll().anyRequest() .authenticated().and().httpBasic(); return
+	 * http.build();
+	 * 
+	 * /*http.csrf().disable().exceptionHandling().authenticationEntryPoint(
+	 * authEntryPoint).and().sessionManagement()
+	 * .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
+	 * authorizeRequests()
+	 * .requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated().and
+	 * ().httpBasic(); http.addFilterBefore(jwtAuthenticationFilter(),
+	 * UsernamePasswordAuthenticationFilter.class); return http.build();
+	 * 
+	 * // }
+	 */
 
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
@@ -121,5 +81,5 @@ return http.build();*/
 	public JWTAuthenticationFilter jwtAuthenticationFilter() {
 		return new JWTAuthenticationFilter();
 	}
-	
+
 }

@@ -38,6 +38,7 @@
               <th scope="col">#</th>
               <th scope="col">name</th>
               <th scope="col">head doctor id</th>
+              <th scope="col" sec:authorize="hasAnyAuthority('ADMIN')">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -45,7 +46,7 @@
               <td th:text="${ward.id}"></td>
               <td th:text="${ward.name}"></td>
               <td th:text="${ward.headDoctorId}"></td>
-              <td>
+              <td sec:authorize="hasAnyAuthority('ADMIN')">
                 <a class="btn btn-primary" th:href="@{/ui/wards/{id}/edit(id=${ward.id})}">Edit</a>
                 &nbsp; &nbsp; &nbsp;
                 <a class="btn btn-primary" th:href="@{/ui/wards/{id}/delete(id=${ward.id})}">Delete</a>

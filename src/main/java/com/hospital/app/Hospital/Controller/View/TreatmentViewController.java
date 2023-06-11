@@ -1,9 +1,14 @@
 package com.hospital.app.Hospital.Controller.View;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,8 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.hospital.app.Hospital.Dto.TreatmentDto;
+import com.hospital.app.Hospital.Model.Patient;
+import com.hospital.app.Hospital.Model.RoleType;
+import com.hospital.app.Hospital.Service.PatientService;
 import com.hospital.app.Hospital.Service.TreatmentService;
-import com.hospital.app.Hospital.dto.TreatmentDto;
 
 import jakarta.validation.Valid;
 
@@ -24,6 +32,9 @@ public class TreatmentViewController {
 
 	@Autowired
 	private TreatmentService treatmentService;
+
+	@Autowired
+	private PatientService patientService;
 
 	@GetMapping(value = "/{id}")
 	public String getTreatment(@PathVariable int id, Model model) {
@@ -39,7 +50,24 @@ public class TreatmentViewController {
 	@GetMapping
 	public String getTreatments(Model model) {
 		if (treatmentService.checkPermissions()) {
-			List<TreatmentDto> treatments = (List<TreatmentDto>) treatmentService.getTreatments(0, 10).getContent();
+
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			User principal = (User) auth.getPrincipal();
+			String userRoleType = auth.getAuthorities().stream().findFirst().get().toString();
+			List<TreatmentDto> treatments = new ArrayList<>();
+
+			if (userRoleType.equals(RoleType.PATIENT.toString())) {
+				String patientUsername = principal.getUsername();
+				Optional<Patient> patient = patientService.getPatientIdByUserName(patientUsername);
+				if (patient.isPresent()) {
+					treatments = (List<TreatmentDto>) treatmentService
+							.getTreatmentsForPatient(patient.get().getId(), 0, 100).getContent();
+				}
+			} else if (userRoleType.equals(RoleType.ADMIN.toString())
+					|| userRoleType.equals(RoleType.DIRECTOR.toString())) {
+				treatments = (List<TreatmentDto>) treatmentService.getTreatments(0, 100).getContent();
+			}
+
 			model.addAttribute("treatments", treatments);
 			return "/treatments/treatments-list";
 		} else

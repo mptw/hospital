@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hospital.app.Hospital.Dto.DirectorDto;
+import com.hospital.app.Hospital.Dto.ListResponseDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
 import com.hospital.app.Hospital.Service.DirectorService;
-import com.hospital.app.Hospital.dto.DirectorDto;
-import com.hospital.app.Hospital.dto.ListResponseDto;
 
 @RestController
 @RequestMapping(value = "/api/directors")
 public class DirectorController {
-	
+
 	@Autowired
 	private DirectorService directorService;
-	
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> getDirector(@PathVariable int id) {
 		if (directorService.checkPermissions()) {
@@ -37,7 +37,7 @@ public class DirectorController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<ListResponseDto> getDirectors(
 			@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
@@ -47,7 +47,7 @@ public class DirectorController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<?> updateDirector(@PathVariable int id, @RequestBody DirectorDto director) {
 		if (directorService.checkPermissions()) {
@@ -60,7 +60,7 @@ public class DirectorController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<DirectorDto> saveDirector(@RequestBody DirectorDto director) {
 		if (directorService.checkPermissions()) {

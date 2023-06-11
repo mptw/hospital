@@ -1,4 +1,4 @@
-package com.hospital.app.Hospital.dto;
+package com.hospital.app.Hospital.Dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;

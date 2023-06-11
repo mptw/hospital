@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hospital.app.Hospital.Dto.ListResponseDto;
+import com.hospital.app.Hospital.Dto.WardDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
 import com.hospital.app.Hospital.Service.WardService;
-import com.hospital.app.Hospital.dto.ListResponseDto;
-import com.hospital.app.Hospital.dto.WardDto;
 
 @RestController
 @RequestMapping(value = "/api/wards")
@@ -37,7 +37,7 @@ public class WardController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<ListResponseDto> getWards(
 			@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
@@ -47,7 +47,7 @@ public class WardController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<?> updateWard(@PathVariable int id, @RequestBody WardDto wardDto) {
 		if (wardService.checkPermissions()) {
@@ -60,7 +60,7 @@ public class WardController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<WardDto> saveWard(@RequestBody WardDto wardDto) {
 		if (wardService.checkPermissions()) {
@@ -82,5 +82,5 @@ public class WardController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 }

@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.hospital.app.Hospital.Dto.ListResponseDto;
+import com.hospital.app.Hospital.Dto.StaffDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
 import com.hospital.app.Hospital.Model.RoleType;
 import com.hospital.app.Hospital.Model.Staff;
@@ -17,8 +19,6 @@ import com.hospital.app.Hospital.Repository.StaffRepository;
 import com.hospital.app.Hospital.Repository.WardRepository;
 import com.hospital.app.Hospital.Security.JWTGenerator;
 import com.hospital.app.Hospital.Service.StaffService;
-import com.hospital.app.Hospital.dto.ListResponseDto;
-import com.hospital.app.Hospital.dto.StaffDto;
 
 @Service
 public class StaffServiceImpl implements StaffService {
@@ -28,16 +28,7 @@ public class StaffServiceImpl implements StaffService {
 
 	@Autowired
 	private WardRepository wardRepository;
-/*
-	@Autowired
-	private RoleRepository roleRepository;
-	
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private PersonService personService;
-	*/
+
 	@Autowired
 	private JWTGenerator tokenGenerator;
 
@@ -110,39 +101,16 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public StaffDto create(StaffDto staffDto) {
 		Staff staff = mapToEntity(staffDto);
-	//	UserEntity user = getUserEntity(staffDto);
-	//	staff.getPersonInfo().setUserEntity(saveAndReturnUserEntity(user));
-	//	staff.setPersonInfo(getPersonInfo(staff.getPersonInfo().getUserEntity(), staffDto));
-		
 		Staff createdStaff = staffRepository.save(staff);
 		return mapToDto(createdStaff);
 	}
-/*
-	private UserEntity getUserEntity(StaffDto staffDto) {
-		UserEntity user = new UserEntity();
-		user.setUsername(staffDto.getUsername());	
-		user.setPassword(staffDto.getPassword());
-		Role role = roleRepository.findByType(RoleType.STAFF).get();	
-		user.setRole(role);
-		return user;
-	}
-	
-	private UserEntity saveAndReturnUserEntity(UserEntity user) {
-		userService.saveUser(user);
-		return userService.findByUsername(user.getUsername()).get();
-	}
-	
-	private PersonInfo getPersonInfo(UserEntity user, StaffDto staffDto) {
-		PersonInfo person = new PersonInfo();
-		person.setFirstName(staffDto.getFirstName());
-		person.setLastName(staffDto.getLastName());
-		person.setAge(staffDto.getAge());
-		person.setNumber(staffDto.getNumber());
-		person.setUserEntity(user);
 
-		return personService.create(person);
+	@Override
+	public StaffDto create(Staff staff) {
+		Staff createdStaff = staffRepository.save(staff);
+		return mapToDto(createdStaff);
 	}
-*/	
+
 	@Override
 	public void delete(int id) throws EntityNotFoundException {
 		Staff staffToDelete = staffRepository.findById(id)
@@ -176,13 +144,13 @@ public class StaffServiceImpl implements StaffService {
 		staff.getPersonInfo().setLastName(staffDto.getLastName());
 		staff.getPersonInfo().setNumber(staffDto.getNumber());
 		staff.setType(staffDto.getType());
-		
+
 		int wardId = staffDto.getWardId();
 		if (wardId > 0) {
 			Ward ward = wardRepository.findById(wardId).get();
 			staff.setWard(ward);
 		}
-		
+
 		return staff;
 	}
 

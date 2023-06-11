@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.hospital.app.Hospital.Dto.DoctorDto;
 import com.hospital.app.Hospital.Service.DoctorService;
-import com.hospital.app.Hospital.dto.DoctorDto;
 
 import jakarta.validation.Valid;
 
@@ -75,26 +75,6 @@ public class DoctorViewController {
 			return "/doctors/doctors-edit";
 		}
 		doctorService.update(id, doctorDto);
-		return "redirect:/ui/doctors";
-	}
-
-	@GetMapping(value = "/create")
-	public String crateDoctorForm(Model model) {
-		if (doctorService.checkPermissions()) {
-			DoctorDto doctor = new DoctorDto();
-			model.addAttribute("doctor", doctor);
-			return "/doctors/doctors-create";
-		} else
-			return "unauthorized";
-	}
-
-	@PostMapping(value = "/create")
-	public String saveDoctor(@Valid @ModelAttribute("doctor") DoctorDto doctorDto, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			model.addAttribute("doctor", doctorDto);
-			return "/doctors/doctors-create";
-		}
-		doctorService.create(doctorDto);
 		return "redirect:/ui/doctors";
 	}
 

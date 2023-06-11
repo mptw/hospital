@@ -1,4 +1,4 @@
-package com.hospital.app.Hospital.dto;
+package com.hospital.app.Hospital.Dto;
 
 import com.hospital.app.Hospital.Model.PersonInfo;
 import com.hospital.app.Hospital.Model.Staff;
@@ -17,24 +17,24 @@ import lombok.NoArgsConstructor;
 public class StaffDto {
 
 	public int id;
-	
+
 	@NotEmpty(message = "Staff firstName should not be empty.")
 	private String firstName;
-	
+
 	@NotEmpty(message = "Staff lastName should not be empty.")
 	private String lastName;
-	
+
 	@Min(value = 18)
 	@Max(value = 100)
 	private int age;
-	
+
 	@Min(value = 0, message = "Staff number should not be empty.")
 	private long number;
 
 	private StaffType type;
-	
+
 	private int wardId;
-	
+
 	private String username;
 	private String password;
 
@@ -46,8 +46,8 @@ public class StaffDto {
 		this.type = staff.getType();
 		this.number = staff.getPersonInfo().getNumber();
 		this.wardId = staff.getWard() != null ? staff.getWard().getId() : null;
-		this.username=staff.getPersonInfo().getUserEntity().getUsername();
-		this.password=staff.getPersonInfo().getUserEntity().getPassword();
+		this.username = staff.getPersonInfo().getUserEntity().getUsername();
+		this.password = staff.getPersonInfo().getUserEntity().getPassword();
 	}
 
 	public StaffDto(PersonInfo personInfo) {
@@ -55,7 +55,7 @@ public class StaffDto {
 		this.lastName = personInfo.getLastName();
 		this.age = personInfo.getAge();
 		this.number = personInfo.getNumber();
-		this.username=personInfo.getUserEntity().getUsername();
-		this.password=personInfo.getUserEntity().getPassword();
+		this.username = personInfo.getUserEntity().getUsername();
+		this.password = personInfo.getUserEntity().getPassword();
 	}
 }

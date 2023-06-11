@@ -18,7 +18,7 @@ public interface UserService extends UserDetailsService {
 	void saveUser(UserEntity userEntity);
 
 	Optional<UserEntity> findById(int id);
-	
+
 	Optional<UserEntity> findByUsername(String username);
 
 	boolean areUserDetailsValid(UserEntity userEntity);
@@ -30,6 +30,6 @@ public interface UserService extends UserDetailsService {
 	void updateUser(UserEntity userEntity);
 
 	void delete(String username) throws EntityNotFoundException;
-	
+
 	void delete(int id) throws EntityNotFoundException;
 }

@@ -14,14 +14,6 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-sm-12">
-        <a class="btn btn-primary" th:href="@{/ui/staff/create}">Create Staff</a>
-      </div>
-    </div>
-
-    &nbsp;
-
     <div class="row" th:unless="${staff} and ${staff.size()}">
       <div class="col-sm-12">
         <div class="alert alert-danger">No staff</div>
@@ -42,7 +34,7 @@
               <th scope="col">number</th>
               <th scope="col">type</th>
               <th scope="col">ward id</th>
-              <th scope="col">Actions</th>
+              <th scope="col" sec:authorize="hasAnyAuthority('ADMIN')">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -54,7 +46,7 @@
               <td th:text="${staffMember.number}">
               <td th:text="${staffMember.type}">
               <td th:text="${staffMember.wardId}"></td>
-              <td>
+              <td sec:authorize="hasAnyAuthority('ADMIN')">
                 <a class="btn btn-primary" th:href="@{/ui/staff/{id}/edit(id=${staffMember.id})}">Edit</a>
                 &nbsp; &nbsp; &nbsp;
                 <a class="btn btn-primary" th:href="@{/ui/staff/{id}/delete(id=${staffMember.id})}">Delete</a>

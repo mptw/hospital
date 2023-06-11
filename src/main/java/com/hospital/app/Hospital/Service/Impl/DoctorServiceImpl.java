@@ -1,6 +1,7 @@
 package com.hospital.app.Hospital.Service.Impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.hospital.app.Hospital.Dto.DoctorDto;
+import com.hospital.app.Hospital.Dto.ListResponseDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
 import com.hospital.app.Hospital.Model.Doctor;
 import com.hospital.app.Hospital.Model.RoleType;
@@ -17,8 +20,6 @@ import com.hospital.app.Hospital.Repository.DoctorRepository;
 import com.hospital.app.Hospital.Repository.WardRepository;
 import com.hospital.app.Hospital.Security.JWTGenerator;
 import com.hospital.app.Hospital.Service.DoctorService;
-import com.hospital.app.Hospital.dto.DoctorDto;
-import com.hospital.app.Hospital.dto.ListResponseDto;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -28,16 +29,7 @@ public class DoctorServiceImpl implements DoctorService {
 
 	@Autowired
 	private WardRepository wardRepository;
-	/*
-	@Autowired
-	private RoleRepository roleRepository;
-	
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private PersonService personService;
-*/
+
 	@Autowired
 	private JWTGenerator tokenGenerator;
 
@@ -47,7 +39,13 @@ public class DoctorServiceImpl implements DoctorService {
 				.orElseThrow(() -> new EntityNotFoundException("Doctor with id: " + id + " could not be retrieved"));
 		return mapToDto(doctor);
 	}
-	
+
+	@Override
+	public Optional<Doctor> getDoctorIdByUserName(String doctorUsername) {
+		return doctorRepository.findAll().stream()
+				.filter(d -> d.getPersonInfo().getUserEntity().getUsername().equals(doctorUsername)).findFirst();
+	}
+
 	@Override
 	public ListResponseDto getDoctors(int pageNo, int pageSize) {
 		Pageable pageable = PageRequest.of(pageNo, pageSize);
@@ -109,39 +107,15 @@ public class DoctorServiceImpl implements DoctorService {
 	@Override
 	public DoctorDto create(DoctorDto doctorDto) {
 		Doctor doctor = mapToEntity(doctorDto);
-		//UserEntity user = getUserEntity(doctorDto);
-		//doctor.getPersonInfo().setUserEntity(saveAndReturnUserEntity(user));
-		//doctor.setPersonInfo(getPersonInfo(doctor.getPersonInfo().getUserEntity(), doctorDto));
-		
 		Doctor createdDoctor = doctorRepository.save(doctor);
 		return mapToDto(createdDoctor);
 	}
-	
-	/*
-	private UserEntity getUserEntity(DoctorDto doctorDto) {
-		UserEntity user = new UserEntity();
-		user.setUsername(doctorDto.getUsername());	
-		user.setPassword(doctorDto.getPassword());
-		Role role = roleRepository.findByType(RoleType.DOCTOR).get();	
-		user.setRole(role);
-		return user;
-	}
-	
-	private UserEntity saveAndReturnUserEntity(UserEntity user) {
-		userService.saveUser(user);
-		return userService.findByUsername(user.getUsername()).get();
-	}
-	
-	private PersonInfo getPersonInfo(UserEntity user, DoctorDto doctorDto) {
-		PersonInfo person = new PersonInfo();
-		person.setFirstName(doctorDto.getFirstName());
-		person.setLastName(doctorDto.getLastName());
-		person.setAge(doctorDto.getAge());
-		person.setNumber(doctorDto.getNumber());
-		person.setUserEntity(user);
 
-		return personService.create(person);
-	}*/
+	@Override
+	public DoctorDto create(Doctor doctor) {
+		Doctor createdDoctor = doctorRepository.save(doctor);
+		return mapToDto(createdDoctor);
+	}
 
 	@Override
 	public void delete(int id) throws EntityNotFoundException {
@@ -160,7 +134,7 @@ public class DoctorServiceImpl implements DoctorService {
 
 	private DoctorDto mapToDto(Doctor doctor) {
 		DoctorDto doctorDto = new DoctorDto();
-		
+
 		doctorDto.setId(doctor.getId());
 		doctorDto.setAge(doctor.getPersonInfo().getAge());
 		doctorDto.setFirstName(doctor.getPersonInfo().getFirstName());
@@ -191,5 +165,4 @@ public class DoctorServiceImpl implements DoctorService {
 		}
 		return doctor;
 	}
-
 }

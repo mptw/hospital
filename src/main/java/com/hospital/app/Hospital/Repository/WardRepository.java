@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.hospital.app.Hospital.Model.Ward;
 
 @Repository
-public interface WardRepository extends JpaRepository<Ward, Integer>{
-	
+public interface WardRepository extends JpaRepository<Ward, Integer> {
+
 }

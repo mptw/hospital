@@ -14,14 +14,6 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-sm-12">
-        <a class="btn btn-primary" th:href="@{/ui/directors/create}">Create Director</a>
-      </div>
-    </div>
-
-    &nbsp;
-
     <div class="row" th:unless="${directors} and ${directors.size()}">
       <div class="col-sm-12">
         <div class="alert alert-danger">No directors</div>
@@ -40,7 +32,7 @@
               <th scope="col">lastName</th>
               <th scope="col">age</th>
               <th scope="col">number</th>
-              <th scope="col">Actions</th>
+              <th scope="col" sec:authorize="hasAnyAuthority('ADMIN')">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -50,7 +42,7 @@
               <td th:text="${director.lastName}"></td>
               <td th:text="${director.age}"></td>
               <td th:text="${director.number}">
-              <td>
+              <td sec:authorize="hasAnyAuthority('ADMIN')">
                 <a class="btn btn-primary" th:href="@{/ui/directors/{id}/edit(id=${director.id})}">Edit</a>
                 &nbsp; &nbsp; &nbsp;
                 <a class="btn btn-primary" th:href="@{/ui/directors/{id}/delete(id=${director.id})}">Delete</a>

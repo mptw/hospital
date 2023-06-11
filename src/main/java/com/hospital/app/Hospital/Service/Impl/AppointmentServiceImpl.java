@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.hospital.app.Hospital.Dto.AppointmentDto;
+import com.hospital.app.Hospital.Dto.ListResponseDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
 import com.hospital.app.Hospital.Model.Appointment;
 import com.hospital.app.Hospital.Model.Doctor;
@@ -21,8 +23,6 @@ import com.hospital.app.Hospital.Repository.DoctorRepository;
 import com.hospital.app.Hospital.Repository.PatientRepository;
 import com.hospital.app.Hospital.Security.JWTGenerator;
 import com.hospital.app.Hospital.Service.AppointmentService;
-import com.hospital.app.Hospital.dto.AppointmentDto;
-import com.hospital.app.Hospital.dto.ListResponseDto;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -63,7 +63,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 		return appointmentListResponse;
 	}
-	
+
 	@Override
 	public ListResponseDto getAppointmentsWithDoctor(int doctorId, int pageNo, int pageSize) {
 		Pageable pageable = PageRequest.of(pageNo, pageSize);
@@ -109,9 +109,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 		Appointment appointmentToUpdate = appointmentRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Appointment with id: " + id + " could not be updated"));
 
-		
 		Date appointmentDate = appointmentDto.getDate();
-		if(isDateInWorkingHours(appointmentDate)) {
+		if (isDateInWorkingHours(appointmentDate)) {
 			throw new RuntimeException("Appointment time should be in wokring hours!");
 		}
 		appointmentToUpdate.setDate(appointmentDto.getDate());
@@ -135,17 +134,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public AppointmentDto create(AppointmentDto appointmentDto) {
 		Appointment appointment = mapToEntity(appointmentDto);
-		
-		
-		//TODO DOESNT SIOPT EXC
-		if(isDateInWorkingHours(appointmentDto.getDate())) {
+
+		// TODO DOESNT SIOPT EXC
+		if (isDateInWorkingHours(appointmentDto.getDate())) {
 			throw new RuntimeException("Appointment time should be in wokring hours!");
 		}
-		
+
 		Appointment createdAppointment = appointmentRepository.save(appointment);
 		return mapToDto(createdAppointment);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private boolean isDateInWorkingHours(Date date) {
 		Calendar appointmentDate = Calendar.getInstance();
@@ -160,7 +158,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 		}
 		return true;
 	}
-	
 
 	@Override
 	public void delete(int id) throws EntityNotFoundException {

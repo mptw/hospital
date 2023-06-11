@@ -1,6 +1,7 @@
 package com.hospital.app.Hospital.Service.Impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.hospital.app.Hospital.Dto.ListResponseDto;
+import com.hospital.app.Hospital.Dto.PatientDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
 import com.hospital.app.Hospital.Model.Doctor;
 import com.hospital.app.Hospital.Model.Patient;
@@ -19,8 +22,6 @@ import com.hospital.app.Hospital.Repository.PatientRepository;
 import com.hospital.app.Hospital.Repository.WardRepository;
 import com.hospital.app.Hospital.Security.JWTGenerator;
 import com.hospital.app.Hospital.Service.PatientService;
-import com.hospital.app.Hospital.dto.ListResponseDto;
-import com.hospital.app.Hospital.dto.PatientDto;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -33,16 +34,6 @@ public class PatientServiceImpl implements PatientService {
 
 	@Autowired
 	private WardRepository wardRepository;
-	/*
-	@Autowired
-	private RoleRepository roleRepository;
-	
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private PersonService personService;
-	 */
-
 
 	@Autowired
 	private JWTGenerator tokenGenerator;
@@ -52,6 +43,12 @@ public class PatientServiceImpl implements PatientService {
 		Patient patient = patientRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Patient with id: " + id + " could not be retrieved"));
 		return mapToDto(patient);
+	}
+
+	@Override
+	public Optional<Patient> getPatientIdByUserName(String patientUsername) {
+		return patientRepository.findAll().stream()
+				.filter(d -> d.getPersonInfo().getUserEntity().getUsername().equals(patientUsername)).findFirst();
 	}
 
 	@Override
@@ -143,39 +140,15 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public PatientDto create(PatientDto patientDto) {
 		Patient patient = mapToEntity(patientDto);
-	//	UserEntity user = getUserEntity(patientDto);
-	//	patient.getPersonInfo().setUserEntity(saveAndReturnUserEntity(user));
-	//	patient.setPersonInfo(getPersonInfo(patient.getPersonInfo().getUserEntity(), patientDto));
-		
 		Patient createdPatient = patientRepository.save(patient);
 		return mapToDto(createdPatient);
 	}
-	
-	/*
-	private UserEntity getUserEntity(PatientDto patientDto) {
-		UserEntity user = new UserEntity();
-		user.setUsername(patientDto.getUsername());	
-		user.setPassword(patientDto.getPassword());
-		Role role = roleRepository.findByType(RoleType.PATIENT).get();	
-		user.setRole(role);
-		return user;
-	}
-	
-	private UserEntity saveAndReturnUserEntity(UserEntity user) {
-		userService.saveUser(user);
-		return userService.findByUsername(user.getUsername()).get();
-	}
-	
-	private PersonInfo getPersonInfo(UserEntity user, PatientDto patientDto) {
-		PersonInfo person = new PersonInfo();
-		person.setFirstName(patientDto.getFirstName());
-		person.setLastName(patientDto.getLastName());
-		person.setAge(patientDto.getAge());
-		person.setNumber(patientDto.getNumber());
-		person.setUserEntity(user);
 
-		return personService.create(person);
-	}*/
+	@Override
+	public PatientDto create(Patient patient) {
+		Patient createdPatient = patientRepository.save(patient);
+		return mapToDto(createdPatient);
+	}
 
 	@Override
 	public void delete(int id) throws EntityNotFoundException {
@@ -195,7 +168,7 @@ public class PatientServiceImpl implements PatientService {
 	private PatientDto mapToDto(Patient patient) {
 		PatientDto patientDto = new PatientDto();
 
-		patientDto.setId(patient.getPersonInfo().getId());
+		patientDto.setId(patient.getId());
 		patientDto.setAge(patient.getPersonInfo().getAge());
 		patientDto.setFirstName(patient.getPersonInfo().getFirstName());
 		patientDto.setLastName(patient.getPersonInfo().getLastName());
@@ -246,11 +219,4 @@ public class PatientServiceImpl implements PatientService {
 		}
 		return false;
 	}
-
-	
-	//TODO
-	private void isLoggedInUserDoctorOfPatient() {
-		// look at JWTAuthenticationFilter for clue how to get user
-	}
-
 }

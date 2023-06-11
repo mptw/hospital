@@ -59,7 +59,6 @@ public class RoomViewController {
 			return "unauthorized";
 	}
 
-	// TODO add modelattrfor roeltypeaswell?
 	@PostMapping(value = "/{id}/edit")
 	public String updateRoom(@PathVariable("id") int id, @Valid @ModelAttribute("room") Room room, BindingResult result,
 			Model model) {

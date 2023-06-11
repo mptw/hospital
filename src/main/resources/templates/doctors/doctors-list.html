@@ -14,14 +14,6 @@
       </div>
     </div>
 
-    <div class="row" sec:authorize="hasAnyAuthority('ADMIN')">
-      <div class="col-sm-12">
-        <a class="btn btn-primary" th:href="@{/ui/doctors/create}">Create Doctor</a>
-      </div>
-    </div>
-
-    &nbsp;
-
     <div class="row" th:unless="${doctors} and ${doctors.size()}">
       <div class="col-sm-12">
         <div class="alert alert-danger">No doctors</div>
@@ -55,7 +47,7 @@
               <td th:text="${doctor.number}">
               <td th:text="${doctor.wardId}"></td>
               <td sec:authorize="hasAnyAuthority('ADMIN')">
-                <a class="btn btn-primary" th:href="@{/ui/doctors/{id}/edit(id=${doctor.id})}" >Edit</a>
+                <a class="btn btn-primary" th:href="@{/ui/doctors/{id}/edit(id=${doctor.id})}">Edit</a>
                 &nbsp; &nbsp; &nbsp;
                 <a class="btn btn-primary" th:href="@{/ui/doctors/{id}/delete(id=${doctor.id})}">Delete</a>
               </td>

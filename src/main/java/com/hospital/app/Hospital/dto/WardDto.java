@@ -1,4 +1,4 @@
-package com.hospital.app.Hospital.dto;
+package com.hospital.app.Hospital.Dto;
 
 import com.hospital.app.Hospital.Model.Ward;
 
@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WardDto {
-	
+
 	private int id;
-	
+
 	@NotEmpty(message = "Ward name should not be empty.")
 	private String name;
-	
+
 	private int headDoctorId;
 
 	public WardDto(Ward ward) {

@@ -1,8 +1,8 @@
 package com.hospital.app.Hospital.Service;
 
+import com.hospital.app.Hospital.Dto.ListResponseDto;
+import com.hospital.app.Hospital.Dto.WardDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
-import com.hospital.app.Hospital.dto.ListResponseDto;
-import com.hospital.app.Hospital.dto.WardDto;
 
 public interface WardService {
 

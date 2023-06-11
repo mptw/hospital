@@ -16,12 +16,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name= "Roles")
+@Table(name = "Roles")
 public class Role implements GrantedAuthority {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -29,9 +26,9 @@ public class Role implements GrantedAuthority {
 	public int id;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name="type")
+	@Column(name = "type")
 	private RoleType type;
-	
+
 	public String getName() {
 		return type.name();
 	}

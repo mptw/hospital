@@ -16,9 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
+import com.hospital.app.Hospital.Model.Director;
+import com.hospital.app.Hospital.Model.Doctor;
+import com.hospital.app.Hospital.Model.Patient;
 import com.hospital.app.Hospital.Model.PersonInfo;
 import com.hospital.app.Hospital.Model.Role;
 import com.hospital.app.Hospital.Model.RoleType;
+import com.hospital.app.Hospital.Model.Staff;
 import com.hospital.app.Hospital.Model.UserEntity;
 import com.hospital.app.Hospital.Repository.RoleRepository;
 import com.hospital.app.Hospital.Repository.UserRepository;
@@ -29,10 +33,6 @@ import com.hospital.app.Hospital.Service.PatientService;
 import com.hospital.app.Hospital.Service.PersonService;
 import com.hospital.app.Hospital.Service.StaffService;
 import com.hospital.app.Hospital.Service.UserService;
-import com.hospital.app.Hospital.dto.DirectorDto;
-import com.hospital.app.Hospital.dto.DoctorDto;
-import com.hospital.app.Hospital.dto.PatientDto;
-import com.hospital.app.Hospital.dto.StaffDto;
 
 @Service
 public class UserDetailsServiceImpl implements UserService {
@@ -102,21 +102,21 @@ public class UserDetailsServiceImpl implements UserService {
 		RoleType requestRole = RoleType.valueOf(userEntity.getRole().getName());
 		Role role = roleRepository.findByType(requestRole).get();
 		userToUpdate.setRole(role);
-		UserEntity user = userRepository.save(userToUpdate);
+		userRepository.save(userToUpdate);
 
 		PersonInfo personInfo = personService.getByUserId(userEntity.getId());
 		if (requestRole.equals(RoleType.DIRECTOR)) {
-			DirectorDto directorDto = new DirectorDto(personInfo);
-			directorService.create(directorDto);
+			Director director = new Director(personInfo);
+			directorService.create(director);
 		} else if (requestRole.equals(RoleType.DOCTOR)) {
-			DoctorDto doctorDto = new DoctorDto(personInfo);
-			doctorService.create(doctorDto);
+			Doctor doctor = new Doctor(personInfo);
+			doctorService.create(doctor);
 		} else if (requestRole.equals(RoleType.STAFF)) {
-			StaffDto staffDto = new StaffDto(personInfo);
-			staffService.create(staffDto);
+			Staff staff = new Staff(personInfo);
+			staffService.create(staff);
 		} else if (requestRole.equals(RoleType.PATIENT)) {
-			PatientDto patientDto = new PatientDto(personInfo);
-			patientService.create(patientDto);
+			Patient patient = new Patient(personInfo);
+			patientService.create(patient);
 		}
 	}
 

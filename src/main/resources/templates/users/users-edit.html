@@ -8,29 +8,27 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-4 offset-md-4">
-        <h3>Edit doctor</h3>
+        <h3>Edit user</h3>
         <form th:action="@{/ui/users/{id}/edit(id=${user.id})}" th:object="${user}" method="post">
-          		<input type="hidden" th:field="*{id}">
-          
-          		<div class="form-group">
-                    <label>Username</label>
-                    <input type="text" class="form-control" placeholder="Username" th:field="*{username}">
-                </div>
-                <p th:if="${#fields.hasErrors('username')}" class="text-danger"></p>
-                
-                <div class="mb-3">
-                    <select items="${roleTypes}" class="form-control" id="user.wantedRole.type" name="Role.type"
-                        th:field="*{Role.type}" placeholder="Role Type">
-                        <!--  <option value="ANNONYMOUS">ANNONYMOUS</option>
-                           <option value="ADMIN" sec:authorize="hasAnyAuthority('ADMIN')">ADMIN</option> -->
-                        <option value="ADMIN">ADMIN</option>
-                        <option value="DIRECTOR">DIRECTOR</option>
-                        <option value="DOCTOR">DOCTOR</option>
-                        <option value="STAFF">STAFF</option>
-                        <option value="PATIENT">PATIENT</option>
-                    </select>
-                </div>
-          
+          <input type="hidden" th:field="*{id}">
+
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" class="form-control" placeholder="Username" th:field="*{username}">
+          </div>
+          <p th:if="${#fields.hasErrors('username')}" class="text-danger"></p>
+
+          <div class="mb-3">
+            <select items="${roleTypes}" class="form-control" id="user.wantedRole.type" name="Role.type"
+              th:field="*{Role.type}" placeholder="Role Type">
+              <option value="ADMIN">ADMIN</option>
+              <option value="DIRECTOR">DIRECTOR</option>
+              <option value="DOCTOR">DOCTOR</option>
+              <option value="STAFF">STAFF</option>
+              <option value="PATIENT">PATIENT</option>
+            </select>
+          </div>
+
 
           <button type="submit" class="btn btn-primary">Edit</button>
         </form>

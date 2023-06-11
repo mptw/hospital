@@ -1,4 +1,4 @@
-package com.hospital.app.Hospital.dto;
+package com.hospital.app.Hospital.Dto;
 
 import com.hospital.app.Hospital.Model.Patient;
 import com.hospital.app.Hospital.Model.PersonInfo;
@@ -34,7 +34,7 @@ public class PatientDto {
 
 	private int doctorId;
 	private int wardId;
-	
+
 	private String username;
 	private String password;
 
@@ -48,8 +48,8 @@ public class PatientDto {
 		this.number = patient.getPersonInfo().getNumber();
 		this.doctorId = patient.getDoctor() != null ? patient.getDoctor().getId() : null;
 		this.wardId = patient.getWard() != null ? patient.getWard().getId() : null;
-		this.username=patient.getPersonInfo().getUserEntity().getUsername();
-		this.password=patient.getPersonInfo().getUserEntity().getPassword();
+		this.username = patient.getPersonInfo().getUserEntity().getUsername();
+		this.password = patient.getPersonInfo().getUserEntity().getPassword();
 	}
 
 	public PatientDto(PersonInfo personInfo) {
@@ -57,7 +57,7 @@ public class PatientDto {
 		this.lastName = personInfo.getLastName();
 		this.age = personInfo.getAge();
 		this.number = personInfo.getNumber();
-		this.username=personInfo.getUserEntity().getUsername();
-		this.password=personInfo.getUserEntity().getPassword();
+		this.username = personInfo.getUserEntity().getUsername();
+		this.password = personInfo.getUserEntity().getPassword();
 	}
 }

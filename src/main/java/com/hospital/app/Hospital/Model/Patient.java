@@ -20,7 +20,7 @@ public class Patient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
-	
+
 	@Column
 	private String disease;
 
@@ -36,4 +36,10 @@ public class Patient {
 	@OneToOne
 	private PersonInfo personInfo = new PersonInfo();
 
+	public Patient(PersonInfo personInfo) {
+		this.personInfo = personInfo;
+	}
+
+	public Patient() {
+	}
 }

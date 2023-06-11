@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hospital.app.Hospital.Dto.ListResponseDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
 import com.hospital.app.Hospital.Model.Room;
 import com.hospital.app.Hospital.Service.RoomService;
-import com.hospital.app.Hospital.dto.ListResponseDto;
 
 @RestController
 @RequestMapping(value = "/api/rooms")
@@ -24,7 +24,7 @@ public class RoomController {
 
 	@Autowired
 	private RoomService roomService;
-	
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> getRoom(@PathVariable int id) {
 		if (roomService.checkPermissions()) {
@@ -37,7 +37,7 @@ public class RoomController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<ListResponseDto> getRooms(
 			@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
@@ -47,7 +47,7 @@ public class RoomController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<?> updateRoom(@PathVariable int id, @RequestBody Room room) {
 		if (roomService.checkPermissions()) {
@@ -60,7 +60,7 @@ public class RoomController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<Room> saveRoom(@RequestBody Room room) {
 		if (roomService.checkPermissions()) {
@@ -82,5 +82,5 @@ public class RoomController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 }

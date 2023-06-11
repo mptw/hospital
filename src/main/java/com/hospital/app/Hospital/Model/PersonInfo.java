@@ -37,12 +37,8 @@ public class PersonInfo {
 	@Column
 	@Min(value = 0, message = "number should be valid.")
 	private long number;
-	
+
 	@OneToOne
 	private UserEntity userEntity;
-	
-	// put user here instead.
-//	@Nonnull
-  //  private Role role;
 
 }

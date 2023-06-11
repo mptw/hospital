@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.hospital.app.Hospital.Dto.ListResponseDto;
+import com.hospital.app.Hospital.Dto.TreatmentDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
 import com.hospital.app.Hospital.Model.Patient;
 import com.hospital.app.Hospital.Model.RoleType;
@@ -19,8 +21,6 @@ import com.hospital.app.Hospital.Repository.RoomRepository;
 import com.hospital.app.Hospital.Repository.TreatmentRepository;
 import com.hospital.app.Hospital.Security.JWTGenerator;
 import com.hospital.app.Hospital.Service.TreatmentService;
-import com.hospital.app.Hospital.dto.ListResponseDto;
-import com.hospital.app.Hospital.dto.TreatmentDto;
 
 @Service
 public class TreatmentServiceImpl implements TreatmentService {
@@ -90,8 +90,6 @@ public class TreatmentServiceImpl implements TreatmentService {
 		treatmentToUpdate.setStartDate(treatmentDto.getStartDate());
 		treatmentToUpdate.setEndDate(treatmentDto.getEndDate());
 		treatmentToUpdate.setPricePerDay(treatmentDto.getPricePerDay());
-
-		// TODO - calculate total price
 		treatmentToUpdate.setTotalPrice(treatmentDto.getTotalPrice());
 
 		int patientId = treatmentDto.getPatientId();
@@ -126,7 +124,7 @@ public class TreatmentServiceImpl implements TreatmentService {
 
 	@Override
 	public boolean checkPermissions() {
-		if (tokenGenerator.doesLoggedInUserHaveNeededRole(RoleType.DOCTOR)) {
+		if (tokenGenerator.doesLoggedInUserHaveNeededRole(RoleType.PATIENT)) {
 			return true;
 		}
 		return false;
@@ -140,7 +138,6 @@ public class TreatmentServiceImpl implements TreatmentService {
 		treatmentDto.setEndDate(treatment.getEndDate());
 		treatmentDto.setPricePerDay(treatment.getPricePerDay());
 
-		// TODO - calculate total price
 		treatmentDto.setTotalPrice(treatment.getTotalPrice());
 
 		Patient patient = treatment.getPatient();
@@ -162,7 +159,6 @@ public class TreatmentServiceImpl implements TreatmentService {
 		treatment.setEndDate(treatmentDto.getEndDate());
 		treatment.setPricePerDay(treatmentDto.getPricePerDay());
 
-		// TODO - calculate total price
 		treatment.setTotalPrice(treatmentDto.getTotalPrice());
 
 		int patientId = treatmentDto.getPatientId();

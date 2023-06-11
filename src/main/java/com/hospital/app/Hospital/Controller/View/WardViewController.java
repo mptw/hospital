@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.hospital.app.Hospital.Dto.WardDto;
 import com.hospital.app.Hospital.Service.WardService;
-import com.hospital.app.Hospital.dto.WardDto;
 
 import jakarta.validation.Valid;
 

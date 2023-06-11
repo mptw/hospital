@@ -1,45 +1,37 @@
 package com.hospital.app.Hospital.Security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-
-import com.hospital.app.Hospital.Repository.UserRepository;
-import com.hospital.app.Hospital.Service.Impl.UserDetailsServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 public class JWTAuthenticationFilter {
-	//extends OncePerRequestFilter {
-
-	@Autowired
-	private JWTGenerator tokenGenerator;
-	
-	@Autowired
-	private UserDetailsServiceImpl customUserDetailsService;
-	
-	@Autowired
-	private UserRepository userRepository;
+	// extends OncePerRequestFilter {
 
 	/*
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		String token = getJWTFromRequest(request);
-		if (StringUtils.hasText(token) && tokenGenerator.validateToken(token)) {
-			String username = tokenGenerator.getUsernameFromJWT(token);
+	 * @Autowired private JWTGenerator tokenGenerator;
+	 * 
+	 * @Autowired private UserDetailsServiceImpl customUserDetailsService;
+	 * 
+	 * @Autowired private UserRepository userRepository;
+	 * 
+	 * /*
+	 * 
+	 * @Override protected void doFilterInternal(HttpServletRequest request,
+	 * HttpServletResponse response, FilterChain filterChain) throws
+	 * ServletException, IOException { String token = getJWTFromRequest(request); if
+	 * (StringUtils.hasText(token) && tokenGenerator.validateToken(token)) { String
+	 * username = tokenGenerator.getUsernameFromJWT(token);
+	 * 
+	 * UserDetails userDetails =
+	 * customUserDetailsService.loadUserByUsername(username);
+	 * UsernamePasswordAuthenticationToken authenticationToken = new
+	 * UsernamePasswordAuthenticationToken( userDetails, null,
+	 * userDetails.getAuthorities()); authenticationToken.setDetails(new
+	 * WebAuthenticationDetailsSource().buildDetails(request));
+	 * SecurityContextHolder.getContext().setAuthentication(authenticationToken); }
+	 * filterChain.doFilter(request, response); }
+	 */
 
-			//TODO - check
-			//RoleType userType = userRepository.findByUsername(username).get().getRole().getType();
-			
-			UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-					userDetails, null, userDetails.getAuthorities());
-			authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-			SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-		}
-		filterChain.doFilter(request, response);
-	}
-*/
 	private String getJWTFromRequest(HttpServletRequest request) {
 		String bearerToken = request.getHeader("Authorization");
 		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {

@@ -1,4 +1,4 @@
-package com.hospital.app.Hospital.dto;
+package com.hospital.app.Hospital.Dto;
 
 import java.util.Date;
 
@@ -15,18 +15,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AppointmentDto {
 
-		private int id;
-		
-		@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-		private Date date;
-		
-		private int doctorId;
-		private int patientId;
+	private int id;
 
-		public AppointmentDto(Appointment appointment) {
-			this.id = appointment.getId();
-			this.date = appointment.getDate();
-			this.doctorId = appointment.getDoctor() != null ? appointment.getDoctor().getId() : null;
-			this.patientId = appointment.getPatient() != null ? appointment.getPatient().getId() : null;
-		}
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	private Date date;
+
+	private int doctorId;
+	private int patientId;
+
+	public AppointmentDto(Appointment appointment) {
+		this.id = appointment.getId();
+		this.date = appointment.getDate();
+		this.doctorId = appointment.getDoctor() != null ? appointment.getDoctor().getId() : null;
+		this.patientId = appointment.getPatient() != null ? appointment.getPatient().getId() : null;
+	}
 }

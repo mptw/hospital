@@ -21,9 +21,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "Users")
 public class UserEntity implements UserDetails {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -36,7 +33,7 @@ public class UserEntity implements UserDetails {
 
 	@OneToOne
 	private Role role;
-	
+
 	private Role wantedRole;
 
 	@Override

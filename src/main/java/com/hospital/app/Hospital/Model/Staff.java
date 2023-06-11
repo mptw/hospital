@@ -18,18 +18,25 @@ import lombok.Setter;
 @Entity
 @Table(name = "Staff")
 public class Staff {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type")
 	private StaffType type;
 
 	@ManyToOne
 	private Ward ward;
-	
+
 	@OneToOne
 	private PersonInfo personInfo = new PersonInfo();
+
+	public Staff(PersonInfo personInfo) {
+		this.personInfo = personInfo;
+	}
+
+	public Staff() {
+	}
 }

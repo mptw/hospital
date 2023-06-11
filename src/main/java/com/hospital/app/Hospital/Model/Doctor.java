@@ -29,18 +29,24 @@ public class Doctor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
-	
+
 	@Column
 	private String qualification;
-	
+
 	@Transient
 	@OneToMany(mappedBy = "doctors")
 	private List<Patient> patients = new ArrayList<>();
 
 	@ManyToOne
 	private Ward ward;
-	
+
 	@OneToOne
 	private PersonInfo personInfo = new PersonInfo();
 
+	public Doctor(PersonInfo personInfo) {
+		this.personInfo = personInfo;
+	}
+
+	public Doctor() {
+	}
 }

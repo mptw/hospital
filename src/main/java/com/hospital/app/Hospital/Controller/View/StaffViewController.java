@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.hospital.app.Hospital.Dto.StaffDto;
 import com.hospital.app.Hospital.Model.StaffType;
 import com.hospital.app.Hospital.Service.StaffService;
-import com.hospital.app.Hospital.dto.StaffDto;
 
 import jakarta.validation.Valid;
 
@@ -67,27 +67,6 @@ public class StaffViewController {
 			return "/staff/staff-edit";
 		}
 		staffService.update(id, staffDto);
-		return "redirect:/ui/staff";
-	}
-
-	@GetMapping(value = "/create")
-	public String crateStaffForm(Model model) {
-		if (staffService.checkPermissions()) {
-			StaffDto staff = new StaffDto();
-			model.addAttribute("staff", staff);
-			model.addAttribute("types", Arrays.asList(StaffType.values()));
-			return "/staff/staff-create";
-		} else
-			return "unauthorized";
-	}
-
-	@PostMapping(value = "/create")
-	public String saveStaff(@Valid @ModelAttribute("staff") StaffDto staffDto, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			model.addAttribute("staff", staffDto);
-			return "/staff/staff-create";
-		}
-		staffService.create(staffDto);
 		return "redirect:/ui/staff";
 	}
 

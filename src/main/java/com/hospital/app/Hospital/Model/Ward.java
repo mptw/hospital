@@ -40,7 +40,7 @@ public class Ward {
 	@Transient
 	@OneToMany(mappedBy = "wards")
 	private List<Patient> patients = new ArrayList<>();
-	
+
 	@Transient
 	@OneToMany(mappedBy = "wards")
 	private List<Staff> staff = new ArrayList<>();
@@ -48,18 +48,4 @@ public class Ward {
 	@OneToOne
 	@JoinColumn(name = "headDoctor")
 	private Doctor headDoctor;
-
-	
-	//TODO this whoudl be moved to service 
-	public void addDoctor(Doctor doctor) {
-		if(!doctors.contains(doctor)) {
-			doctors.add(doctor);
-		}
-	}
-
-	public void addPatient(Patient patient) {
-		if(!patients.contains(patient)) {
-			patients.add(patient);
-		}
-	}
 }

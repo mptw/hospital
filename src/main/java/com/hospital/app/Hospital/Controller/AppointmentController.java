@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hospital.app.Hospital.Dto.AppointmentDto;
+import com.hospital.app.Hospital.Dto.ListResponseDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
 import com.hospital.app.Hospital.Service.AppointmentService;
-import com.hospital.app.Hospital.dto.AppointmentDto;
-import com.hospital.app.Hospital.dto.ListResponseDto;
 
 @RestController
 @RequestMapping(value = "/api/appointments")
@@ -37,18 +37,17 @@ public class AppointmentController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<ListResponseDto> getAppointments(
 			@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
 			@RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 		if (appointmentService.checkPermissions()) {
-			return new ResponseEntity<>(appointmentService.getAppointments(pageNo, pageSize),
-					HttpStatus.OK);
+			return new ResponseEntity<>(appointmentService.getAppointments(pageNo, pageSize), HttpStatus.OK);
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@GetMapping(value = "/doctor/{doctorId}")
 	public ResponseEntity<ListResponseDto> getAppointmentsWithDoctor(@PathVariable int doctorId,
 			@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,

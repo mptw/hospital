@@ -1,9 +1,14 @@
 package com.hospital.app.Hospital.Controller.View;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,8 +18,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.hospital.app.Hospital.Dto.AppointmentDto;
+import com.hospital.app.Hospital.Model.Doctor;
+import com.hospital.app.Hospital.Model.Patient;
+import com.hospital.app.Hospital.Model.RoleType;
 import com.hospital.app.Hospital.Service.AppointmentService;
-import com.hospital.app.Hospital.dto.AppointmentDto;
+import com.hospital.app.Hospital.Service.DoctorService;
+import com.hospital.app.Hospital.Service.PatientService;
 
 import jakarta.validation.Valid;
 
@@ -24,6 +34,12 @@ public class AppointmentViewController {
 
 	@Autowired
 	private AppointmentService appointmentService;
+	
+	@Autowired
+	private DoctorService doctorService;
+	
+	@Autowired
+	private PatientService patientService;
 
 	@GetMapping(value = "/{id}")
 	public String getAppointment(@PathVariable int id, Model model) {
@@ -39,8 +55,31 @@ public class AppointmentViewController {
 	@GetMapping
 	public String getAppointments(Model model) {
 		if (appointmentService.checkPermissions()) {
-			List<AppointmentDto> appointments = (List<AppointmentDto>) appointmentService.getAppointments(0, 10)
-					.getContent();
+
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			User principal = (User) auth.getPrincipal();
+			String userRoleType = auth.getAuthorities().stream().findFirst().get().toString();
+			List<AppointmentDto> appointments = new ArrayList<>();
+
+			if (userRoleType.equals(RoleType.DOCTOR.toString())) {
+				String doctorUsername = principal.getUsername();
+				Optional<Doctor> doctor = doctorService.getDoctorIdByUserName(doctorUsername);
+				if (doctor.isPresent()) {
+					appointments = (List<AppointmentDto>) appointmentService
+							.getAppointmentsWithDoctor(doctor.get().getId(), 0, 100).getContent();
+				}
+			} else if (userRoleType.equals(RoleType.PATIENT.toString())) {
+				String patientUsername = principal.getUsername();
+				Optional<Patient> patient = patientService.getPatientIdByUserName(patientUsername);
+				if (patient.isPresent()) {
+					appointments = (List<AppointmentDto>) appointmentService
+							.getAppointmentsForPatient(patient.get().getId(), 0, 100).getContent();
+				}
+			} else if (userRoleType.equals(RoleType.ADMIN.toString())
+					|| userRoleType.equals(RoleType.DIRECTOR.toString())) {
+				appointments = (List<AppointmentDto>) appointmentService.getAppointments(0, 100).getContent();
+			}
+			
 			model.addAttribute("appointments", appointments);
 			return "/appointments/appointments-list";
 		} else

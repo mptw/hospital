@@ -21,6 +21,5 @@ public class Room {
 
 	@Column
 	private RoomType type;
-	//OR, ICU, regular
-	
+
 }

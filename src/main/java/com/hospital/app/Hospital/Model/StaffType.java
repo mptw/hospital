@@ -1,5 +1,5 @@
 package com.hospital.app.Hospital.Model;
 
 public enum StaffType {
-	NURSE,STAFF,REGISTRY,CLEANING
+	NURSE, STAFF, REGISTRY, CLEANING
 }

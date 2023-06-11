@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.hospital.app.Hospital.Model.Director;
+import com.hospital.app.Hospital.Dto.DirectorDto;
 import com.hospital.app.Hospital.Service.DirectorService;
-import com.hospital.app.Hospital.dto.DirectorDto;
 
 import jakarta.validation.Valid;
 
@@ -40,7 +39,7 @@ public class DirectorViewController {
 	@GetMapping
 	public String getDirectors(Model model) {
 		if (directorService.checkPermissions()) {
-			List<Director> directors = (List<Director>) directorService.getDirectors(0, 10).getContent();
+			List<DirectorDto> directors = (List<DirectorDto>) directorService.getDirectors(0, 10).getContent();
 			model.addAttribute("directors", directors);
 			return "/directors/directors-list";
 		} else
@@ -65,26 +64,6 @@ public class DirectorViewController {
 			return "/directors/directors-edit";
 		}
 		directorService.update(id, directorDto);
-		return "redirect:/ui/directors";
-	}
-
-	@GetMapping(value = "/create")
-	public String crateDirectorForm(Model model) {
-		if (directorService.checkPermissions()) {
-			Director director = new Director();
-			model.addAttribute("director", director);
-			return "/directors/directors-create";
-		} else
-			return "unauthorized";
-	}
-
-	@PostMapping(value = "/create")
-	public String saveDirector(@Valid @ModelAttribute("director") DirectorDto directorDto, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			model.addAttribute("director", directorDto);
-			return "/directors/directors-create";
-		}
-		directorService.create(directorDto);
 		return "redirect:/ui/directors";
 	}
 

@@ -14,10 +14,18 @@ import lombok.Setter;
 @Entity
 @Table(name = "Directors")
 public class Director {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
-	
+
 	@OneToOne
 	private PersonInfo personInfo = new PersonInfo();
+
+	public Director(PersonInfo personInfo) {
+		this.personInfo = personInfo;
+	}
+
+	public Director() {
+	}
 }

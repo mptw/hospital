@@ -1,4 +1,4 @@
-package com.hospital.app.Hospital.dto;
+package com.hospital.app.Hospital.Dto;
 
 import java.util.Date;
 
@@ -17,16 +17,16 @@ import lombok.NoArgsConstructor;
 public class TreatmentDto {
 
 	private int id;
-	
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private Date startDate;
-	
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private Date endDate;
-	
+
 	@Min(value = 0)
 	private double pricePerDay;
-	
+
 	private double totalPrice;
 	private int patientId;
 	private int roomId;

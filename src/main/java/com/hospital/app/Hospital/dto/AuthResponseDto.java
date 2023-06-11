@@ -1,4 +1,4 @@
-package com.hospital.app.Hospital.dto;
+package com.hospital.app.Hospital.Dto;
 
 import lombok.Data;
 
@@ -8,6 +8,6 @@ public class AuthResponseDto {
 	private String tokenType = "Bearer ";
 
 	public AuthResponseDto(String accessToken) {
-        this.accessToken = accessToken;
-    }
+		this.accessToken = accessToken;
+	}
 }

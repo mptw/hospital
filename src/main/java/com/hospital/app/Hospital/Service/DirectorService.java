@@ -1,8 +1,9 @@
 package com.hospital.app.Hospital.Service;
 
+import com.hospital.app.Hospital.Dto.DirectorDto;
+import com.hospital.app.Hospital.Dto.ListResponseDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
-import com.hospital.app.Hospital.dto.DirectorDto;
-import com.hospital.app.Hospital.dto.ListResponseDto;
+import com.hospital.app.Hospital.Model.Director;
 
 public interface DirectorService {
 
@@ -17,4 +18,6 @@ public interface DirectorService {
 	void delete(int id) throws EntityNotFoundException;
 
 	boolean checkPermissions();
+
+	DirectorDto create(Director director);
 }

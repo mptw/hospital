@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hospital.app.Hospital.Dto.DoctorDto;
+import com.hospital.app.Hospital.Dto.ListResponseDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
 import com.hospital.app.Hospital.Service.DoctorService;
-import com.hospital.app.Hospital.dto.DoctorDto;
-import com.hospital.app.Hospital.dto.ListResponseDto;
 
 @RestController
 @RequestMapping(value = "/api/doctors")
@@ -37,7 +37,7 @@ public class DoctorController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<ListResponseDto> getDoctors(
 			@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
@@ -70,7 +70,7 @@ public class DoctorController {
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<DoctorDto> saveDoctor(@RequestBody DoctorDto doctorDto) {
 		if (doctorService.checkPermissions()) {

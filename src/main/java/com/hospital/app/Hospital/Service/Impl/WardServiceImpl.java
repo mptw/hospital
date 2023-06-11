@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.hospital.app.Hospital.Dto.ListResponseDto;
+import com.hospital.app.Hospital.Dto.WardDto;
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
 import com.hospital.app.Hospital.Model.Doctor;
 import com.hospital.app.Hospital.Model.RoleType;
@@ -17,18 +19,15 @@ import com.hospital.app.Hospital.Repository.DoctorRepository;
 import com.hospital.app.Hospital.Repository.WardRepository;
 import com.hospital.app.Hospital.Security.JWTGenerator;
 import com.hospital.app.Hospital.Service.WardService;
-import com.hospital.app.Hospital.dto.ListResponseDto;
-import com.hospital.app.Hospital.dto.WardDto;
 
 @Service
-public class WardServiceImpl implements WardService{
+public class WardServiceImpl implements WardService {
 
 	@Autowired
 	private DoctorRepository doctorRepository;
-	
+
 	@Autowired
 	private WardRepository wardRepository;
-	
 
 	@Autowired
 	private JWTGenerator tokenGenerator;
@@ -62,7 +61,7 @@ public class WardServiceImpl implements WardService{
 	public WardDto update(int id, WardDto wardDto) throws EntityNotFoundException {
 		Ward wardToUpdate = wardRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Ward with id: " + id + " could not be updated"));
-		
+
 		wardToUpdate.setName(wardDto.getName());
 
 		int doctorId = wardDto.getHeadDoctorId();
@@ -70,15 +69,15 @@ public class WardServiceImpl implements WardService{
 			Doctor headDoctor = doctorRepository.findById(doctorId).get();
 			wardToUpdate.setHeadDoctor(headDoctor);
 		}
-		
+
 		Ward updatedWard = wardRepository.save(wardToUpdate);
 		return mapToDto(updatedWard);
 	}
 
 	@Override
 	public WardDto create(WardDto wardDto) {
-		Ward doctor = mapToEntity(wardDto);
-		Ward createdWard = wardRepository.save(doctor);
+		Ward ward = mapToEntity(wardDto);
+		Ward createdWard = wardRepository.save(ward);
 		return mapToDto(createdWard);
 	}
 
@@ -96,7 +95,7 @@ public class WardServiceImpl implements WardService{
 		}
 		return false;
 	}
-	
+
 	private WardDto mapToDto(Ward ward) {
 		WardDto wardDto = new WardDto();
 
@@ -105,9 +104,9 @@ public class WardServiceImpl implements WardService{
 
 		Doctor headDoctor = ward.getHeadDoctor();
 		if (headDoctor != null) {
-			wardDto.setHeadDoctorId(headDoctor.getPersonInfo().getId());
+			wardDto.setHeadDoctorId(headDoctor.getId());
 		}
-		
+
 		return wardDto;
 	}
 

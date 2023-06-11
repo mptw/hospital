@@ -1,7 +1,6 @@
-package com.hospital.app.Hospital.dto;
+package com.hospital.app.Hospital.Dto;
 
 import com.hospital.app.Hospital.Model.Director;
-import com.hospital.app.Hospital.Model.PersonInfo;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -38,16 +37,7 @@ public class DirectorDto {
 		this.lastName = director.getPersonInfo().getLastName();
 		this.age = director.getPersonInfo().getAge();
 		this.number = director.getPersonInfo().getNumber();
-		this.username=director.getPersonInfo().getUserEntity().getUsername();
-		this.password=director.getPersonInfo().getUserEntity().getPassword();
-	}
-	
-	public DirectorDto(PersonInfo personInfo) {
-		this.firstName = personInfo.getFirstName();
-		this.lastName = personInfo.getLastName();
-		this.age = personInfo.getAge();
-		this.number = personInfo.getNumber();
-		this.username=personInfo.getUserEntity().getUsername();
-		this.password=personInfo.getUserEntity().getPassword();
+		this.username = director.getPersonInfo().getUserEntity().getUsername();
+		this.password = director.getPersonInfo().getUserEntity().getPassword();
 	}
 }
