@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments :: head">
+</head>
+
+<body>
+  <hearder th:replace="fragments :: header"></hearder>
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>Directors</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <a class="btn btn-primary" th:href="@{/ui/directors/create}">Create Director</a>
+      </div>
+    </div>
+
+    &nbsp;
+
+    <div class="row" th:unless="${directors} and ${directors.size()}">
+      <div class="col-sm-12">
+        <div class="alert alert-danger">No directors</div>
+      </div>
+    </div>
+
+    &nbsp;
+
+    <div class="row" th:if="${directors.size() > 0}">
+      <div class="col-sm-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">firstName</th>
+              <th scope="col">lastName</th>
+              <th scope="col">age</th>
+              <th scope="col">number</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="director : ${directors}">
+              <td th:text="${director.id}"></td>
+              <td th:text="${director.firstName}"></td>
+              <td th:text="${director.lastName}"></td>
+              <td th:text="${director.age}"></td>
+              <td th:text="${director.number}">
+              <td>
+                <a class="btn btn-primary" th:href="@{/ui/directors/{id}/edit(id=${director.id})}">Edit</a>
+                &nbsp; &nbsp; &nbsp;
+                <a class="btn btn-primary" th:href="@{/ui/directors/{id}/delete(id=${director.id})}">Delete</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

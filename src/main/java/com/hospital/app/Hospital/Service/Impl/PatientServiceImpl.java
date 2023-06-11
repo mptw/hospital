@@ -33,6 +33,16 @@ public class PatientServiceImpl implements PatientService {
 
 	@Autowired
 	private WardRepository wardRepository;
+	/*
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private PersonService personService;
+	 */
+
 
 	@Autowired
 	private JWTGenerator tokenGenerator;
@@ -107,10 +117,10 @@ public class PatientServiceImpl implements PatientService {
 				.orElseThrow(() -> new EntityNotFoundException("Patient with id: " + id + " could not be updated"));
 
 		patientToUpdate.setId(patientDto.getId());
-		patientToUpdate.setAge(patientDto.getAge());
-		patientToUpdate.setFirstName(patientDto.getFirstName());
-		patientToUpdate.setLastName(patientDto.getLastName());
-		patientToUpdate.setNumber(patientDto.getNumber());
+		patientToUpdate.getPersonInfo().setAge(patientDto.getAge());
+		patientToUpdate.getPersonInfo().setFirstName(patientDto.getFirstName());
+		patientToUpdate.getPersonInfo().setLastName(patientDto.getLastName());
+		patientToUpdate.getPersonInfo().setNumber(patientDto.getNumber());
 		patientToUpdate.setDisease(patientDto.getDisease());
 		patientToUpdate.setTreatment(patientDto.getTreatment());
 
@@ -133,9 +143,39 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public PatientDto create(PatientDto patientDto) {
 		Patient patient = mapToEntity(patientDto);
+	//	UserEntity user = getUserEntity(patientDto);
+	//	patient.getPersonInfo().setUserEntity(saveAndReturnUserEntity(user));
+	//	patient.setPersonInfo(getPersonInfo(patient.getPersonInfo().getUserEntity(), patientDto));
+		
 		Patient createdPatient = patientRepository.save(patient);
 		return mapToDto(createdPatient);
 	}
+	
+	/*
+	private UserEntity getUserEntity(PatientDto patientDto) {
+		UserEntity user = new UserEntity();
+		user.setUsername(patientDto.getUsername());	
+		user.setPassword(patientDto.getPassword());
+		Role role = roleRepository.findByType(RoleType.PATIENT).get();	
+		user.setRole(role);
+		return user;
+	}
+	
+	private UserEntity saveAndReturnUserEntity(UserEntity user) {
+		userService.saveUser(user);
+		return userService.findByUsername(user.getUsername()).get();
+	}
+	
+	private PersonInfo getPersonInfo(UserEntity user, PatientDto patientDto) {
+		PersonInfo person = new PersonInfo();
+		person.setFirstName(patientDto.getFirstName());
+		person.setLastName(patientDto.getLastName());
+		person.setAge(patientDto.getAge());
+		person.setNumber(patientDto.getNumber());
+		person.setUserEntity(user);
+
+		return personService.create(person);
+	}*/
 
 	@Override
 	public void delete(int id) throws EntityNotFoundException {
@@ -155,11 +195,11 @@ public class PatientServiceImpl implements PatientService {
 	private PatientDto mapToDto(Patient patient) {
 		PatientDto patientDto = new PatientDto();
 
-		patientDto.setId(patient.getId());
-		patientDto.setAge(patient.getAge());
-		patientDto.setFirstName(patient.getFirstName());
-		patientDto.setLastName(patient.getLastName());
-		patientDto.setNumber(patient.getNumber());
+		patientDto.setId(patient.getPersonInfo().getId());
+		patientDto.setAge(patient.getPersonInfo().getAge());
+		patientDto.setFirstName(patient.getPersonInfo().getFirstName());
+		patientDto.setLastName(patient.getPersonInfo().getLastName());
+		patientDto.setNumber(patient.getPersonInfo().getNumber());
 		patientDto.setDisease(patient.getDisease());
 		patientDto.setTreatment(patient.getTreatment());
 
@@ -178,10 +218,10 @@ public class PatientServiceImpl implements PatientService {
 	private Patient mapToEntity(PatientDto patientDto) {
 		Patient patient = new Patient();
 
-		patient.setAge(patientDto.getAge());
-		patient.setFirstName(patientDto.getFirstName());
-		patient.setLastName(patientDto.getLastName());
-		patient.setNumber(patientDto.getNumber());
+		patient.getPersonInfo().setAge(patientDto.getAge());
+		patient.getPersonInfo().setFirstName(patientDto.getFirstName());
+		patient.getPersonInfo().setLastName(patientDto.getLastName());
+		patient.getPersonInfo().setNumber(patientDto.getNumber());
 		patient.setDisease(patientDto.getDisease());
 		patient.setTreatment(patientDto.getTreatment());
 
@@ -207,6 +247,8 @@ public class PatientServiceImpl implements PatientService {
 		return false;
 	}
 
+	
+	//TODO
 	private void isLoggedInUserDoctorOfPatient() {
 		// look at JWTAuthenticationFilter for clue how to get user
 	}

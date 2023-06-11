@@ -1,6 +1,7 @@
 package com.hospital.app.Hospital.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +9,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +26,10 @@ import com.hospital.app.Hospital.dto.AuthResponseDto;
 import com.hospital.app.Hospital.dto.LoginDto;
 import com.hospital.app.Hospital.dto.RegisterDto;
 
+import lombok.AllArgsConstructor;
+
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -33,15 +39,24 @@ public class AuthController {
 	private PasswordEncoder passwordEncoder;
 	private JWTGenerator jwtGenerator;
 
-	@Autowired
-	public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
-			RoleRepository roleRepository, PasswordEncoder passwordEncoder, JWTGenerator jwtGenerator) {
-		this.authenticationManager = authenticationManager;
-		this.userRepository = userRepository;
-		this.roleRepository = roleRepository;
-		this.passwordEncoder = passwordEncoder;
-		this.jwtGenerator = jwtGenerator;
-	}
+	
+	@GetMapping
+    public String getIndex(Model model, Authentication authentication) {
+        final String welcomeMessage = "Welcome to the Auto Service Management System!";
+        model.addAttribute("welcome", welcomeMessage);
+
+        Authentication authentication2 = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("username", authentication.getName());
+
+    //    User principal = (User) authentication.getPrincipal();
+        
+      //  String userRoleType = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst().get().toString();
+
+        
+      //  model.addAttribute("username", principal.getAuthorities());
+
+        return "index";
+    }
 
 	@PostMapping("login")
 	public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
@@ -51,10 +66,20 @@ public class AuthController {
 		String token = jwtGenerator.generateToken(authentication);
 		return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
 	}
+	
+	@PostMapping("logut")
+	public ResponseEntity<AuthResponseDto> logut(@RequestBody LoginDto loginDto) {
+		Authentication authentication = authenticationManager
+				.authenticate(null);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
 	@PostMapping("register")
 	public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-		if (userRepository.existsByUsername(registerDto.getUsername())) {
+		
+		Optional<UserEntity> potentielUser = userRepository.findByUsername(registerDto.getUsername());
+		if (potentielUser.isPresent()) {
 			return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
 		}
 

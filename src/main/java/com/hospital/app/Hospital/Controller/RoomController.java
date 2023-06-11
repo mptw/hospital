@@ -49,7 +49,7 @@ public class RoomController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<?> updateDoctor(@PathVariable int id, @RequestBody Room room) {
+	public ResponseEntity<?> updateRoom(@PathVariable int id, @RequestBody Room room) {
 		if (roomService.checkPermissions()) {
 			try {
 				Room updatedRoom = roomService.update(id, room);
@@ -62,7 +62,7 @@ public class RoomController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Room> saveDoctor(@RequestBody Room room) {
+	public ResponseEntity<Room> saveRoom(@RequestBody Room room) {
 		if (roomService.checkPermissions()) {
 			Room createdRoom = roomService.create(room);
 			return ResponseEntity.status(HttpStatus.OK).body(createdRoom);
@@ -71,7 +71,7 @@ public class RoomController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<String> deleteDoctor(@PathVariable int id) {
+	public ResponseEntity<String> deleteRoom(@PathVariable int id) {
 		if (roomService.checkPermissions()) {
 			try {
 				roomService.delete(id);

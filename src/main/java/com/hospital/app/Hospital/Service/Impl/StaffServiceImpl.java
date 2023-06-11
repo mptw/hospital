@@ -28,7 +28,16 @@ public class StaffServiceImpl implements StaffService {
 
 	@Autowired
 	private WardRepository wardRepository;
-
+/*
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private PersonService personService;
+	*/
 	@Autowired
 	private JWTGenerator tokenGenerator;
 
@@ -82,10 +91,10 @@ public class StaffServiceImpl implements StaffService {
 				.orElseThrow(() -> new EntityNotFoundException("Staff with id: " + id + " could not be updated"));
 
 		staffToUpdate.setId(staffDto.getId());
-		staffToUpdate.setAge(staffDto.getAge());
-		staffToUpdate.setFirstName(staffDto.getFirstName());
-		staffToUpdate.setLastName(staffDto.getLastName());
-		staffToUpdate.setNumber(staffDto.getNumber());
+		staffToUpdate.getPersonInfo().setAge(staffDto.getAge());
+		staffToUpdate.getPersonInfo().setFirstName(staffDto.getFirstName());
+		staffToUpdate.getPersonInfo().setLastName(staffDto.getLastName());
+		staffToUpdate.getPersonInfo().setNumber(staffDto.getNumber());
 		staffToUpdate.setType(staffDto.getType());
 
 		int wardId = staffDto.getWardId();
@@ -101,10 +110,39 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public StaffDto create(StaffDto staffDto) {
 		Staff staff = mapToEntity(staffDto);
+	//	UserEntity user = getUserEntity(staffDto);
+	//	staff.getPersonInfo().setUserEntity(saveAndReturnUserEntity(user));
+	//	staff.setPersonInfo(getPersonInfo(staff.getPersonInfo().getUserEntity(), staffDto));
+		
 		Staff createdStaff = staffRepository.save(staff);
 		return mapToDto(createdStaff);
 	}
+/*
+	private UserEntity getUserEntity(StaffDto staffDto) {
+		UserEntity user = new UserEntity();
+		user.setUsername(staffDto.getUsername());	
+		user.setPassword(staffDto.getPassword());
+		Role role = roleRepository.findByType(RoleType.STAFF).get();	
+		user.setRole(role);
+		return user;
+	}
+	
+	private UserEntity saveAndReturnUserEntity(UserEntity user) {
+		userService.saveUser(user);
+		return userService.findByUsername(user.getUsername()).get();
+	}
+	
+	private PersonInfo getPersonInfo(UserEntity user, StaffDto staffDto) {
+		PersonInfo person = new PersonInfo();
+		person.setFirstName(staffDto.getFirstName());
+		person.setLastName(staffDto.getLastName());
+		person.setAge(staffDto.getAge());
+		person.setNumber(staffDto.getNumber());
+		person.setUserEntity(user);
 
+		return personService.create(person);
+	}
+*/	
 	@Override
 	public void delete(int id) throws EntityNotFoundException {
 		Staff staffToDelete = staffRepository.findById(id)
@@ -116,10 +154,10 @@ public class StaffServiceImpl implements StaffService {
 		StaffDto staffDto = new StaffDto();
 
 		staffDto.setId(staff.getId());
-		staffDto.setAge(staff.getAge());
-		staffDto.setFirstName(staff.getFirstName());
-		staffDto.setLastName(staff.getLastName());
-		staffDto.setNumber(staff.getNumber());
+		staffDto.setAge(staff.getPersonInfo().getAge());
+		staffDto.setFirstName(staff.getPersonInfo().getFirstName());
+		staffDto.setLastName(staff.getPersonInfo().getLastName());
+		staffDto.setNumber(staff.getPersonInfo().getNumber());
 		staffDto.setType(staff.getType());
 
 		Ward ward = staff.getWard();
@@ -133,10 +171,10 @@ public class StaffServiceImpl implements StaffService {
 	private Staff mapToEntity(StaffDto staffDto) {
 		Staff staff = new Staff();
 
-		staff.setAge(staffDto.getAge());
-		staff.setFirstName(staffDto.getFirstName());
-		staff.setLastName(staffDto.getLastName());
-		staff.setNumber(staffDto.getNumber());
+		staff.getPersonInfo().setAge(staffDto.getAge());
+		staff.getPersonInfo().setFirstName(staffDto.getFirstName());
+		staff.getPersonInfo().setLastName(staffDto.getLastName());
+		staff.getPersonInfo().setNumber(staffDto.getNumber());
 		staff.setType(staffDto.getType());
 		
 		int wardId = staffDto.getWardId();

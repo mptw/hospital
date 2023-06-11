@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
-import com.hospital.app.Hospital.Security.TreatmentService;
+import com.hospital.app.Hospital.Service.TreatmentService;
 import com.hospital.app.Hospital.dto.ListResponseDto;
 import com.hospital.app.Hospital.dto.TreatmentDto;
 

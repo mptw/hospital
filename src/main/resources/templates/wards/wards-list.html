@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments :: head">
+</head>
+
+<body>
+  <hearder th:replace="fragments :: header"></hearder>
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>Wards</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <a class="btn btn-primary" th:href="@{/ui/wards/create}">Create ward</a>
+      </div>
+    </div>
+
+    &nbsp;
+
+    <div class="row" th:unless="${wards} and ${wards.size()}">
+      <div class="col-sm-12">
+        <div class="alert alert-danger">No wards</div>
+      </div>
+    </div>
+
+    &nbsp;
+
+    <div class="row" th:if="${wards.size() > 0}">
+      <div class="col-sm-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">name</th>
+              <th scope="col">head doctor id</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="ward : ${wards}">
+              <td th:text="${ward.id}"></td>
+              <td th:text="${ward.name}"></td>
+              <td th:text="${ward.headDoctorId}"></td>
+              <td>
+                <a class="btn btn-primary" th:href="@{/ui/wards/{id}/edit(id=${ward.id})}">Edit</a>
+                &nbsp; &nbsp; &nbsp;
+                <a class="btn btn-primary" th:href="@{/ui/wards/{id}/delete(id=${ward.id})}">Delete</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

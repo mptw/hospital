@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+  <header th:replace="fragments :: header"></header>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4 offset-md-4">
+        <h3>Edit ward</h3>
+        <form th:action="@{/ui/wards/{wardId}/edit(wardId=${ward.id})}" th:object="${ward}" method="post">
+          <input type="hidden" th:field="*{id}">
+
+          <div class="mb-3">
+            <input type="text" class="form-control" id="name" name="name" th:field="*{name}" placeholder="Name">
+            <p th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></p>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="headDoctorId" name="headDoctorId" th:field="*{headDoctorId}"
+              placeholder="Head Doctor Id">
+            <p th:if="${#fields.hasErrors('headDoctorId')}" class="text-danger" th:errors="*{headDoctorId}"></p>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

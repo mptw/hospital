@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hospital.app.Hospital.Exception.EntityNotFoundException;
-import com.hospital.app.Hospital.Model.Director;
 import com.hospital.app.Hospital.Service.DirectorService;
+import com.hospital.app.Hospital.dto.DirectorDto;
 import com.hospital.app.Hospital.dto.ListResponseDto;
 
 @RestController
@@ -29,7 +29,7 @@ public class DirectorController {
 	public ResponseEntity<?> getDirector(@PathVariable int id) {
 		if (directorService.checkPermissions()) {
 			try {
-				Director director = directorService.get(id);
+				DirectorDto director = directorService.get(id);
 				return ResponseEntity.status(HttpStatus.OK).body(director);
 			} catch (EntityNotFoundException ex) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -49,10 +49,10 @@ public class DirectorController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<?> updateDirector(@PathVariable int id, @RequestBody Director director) {
+	public ResponseEntity<?> updateDirector(@PathVariable int id, @RequestBody DirectorDto director) {
 		if (directorService.checkPermissions()) {
 			try {
-				Director updatedDirector = directorService.update(id, director);
+				DirectorDto updatedDirector = directorService.update(id, director);
 				return ResponseEntity.status(HttpStatus.OK).body(updatedDirector);
 			} catch (EntityNotFoundException ex) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -62,9 +62,9 @@ public class DirectorController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Director> saveDirector(@RequestBody Director director) {
+	public ResponseEntity<DirectorDto> saveDirector(@RequestBody DirectorDto director) {
 		if (directorService.checkPermissions()) {
-			Director createdDirector = directorService.create(director);
+			DirectorDto createdDirector = directorService.create(director);
 			return ResponseEntity.status(HttpStatus.OK).body(createdDirector);
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

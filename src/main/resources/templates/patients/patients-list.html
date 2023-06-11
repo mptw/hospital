@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments :: head">
+</head>
+
+<body>
+  <hearder th:replace="fragments :: header"></hearder>
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>Patients</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <a class="btn btn-primary" th:href="@{/ui/patients/create}">Create patient</a>
+      </div>
+    </div>
+
+    &nbsp;
+
+    <div class="row" th:unless="${patients} and ${patients.size()}">
+      <div class="col-sm-12">
+        <div class="alert alert-danger">No patients</div>
+      </div>
+    </div>
+
+    &nbsp;
+
+    <div class="row" th:if="${patients.size() > 0}">
+      <div class="col-sm-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">firstName</th>
+              <th scope="col">lastName</th>
+              <th scope="col">age</th>
+              <th scope="col">number</th>
+              <th scope="col">doctor id</th>
+              <th scope="col">ward id</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="patient : ${patients}">
+              <td th:text="${patient.id}"></td>
+              <td th:text="${patient.firstName}"></td>
+              <td th:text="${patient.lastName}"></td>
+              <td th:text="${patient.age}"></td>
+              <td th:text="${patient.number}">
+              <td th:text="${patient.doctorId}"></td>
+              <td th:text="${patient.wardId}"></td>
+              <td>
+                <a class="btn btn-primary" th:href="@{/ui/patients/{id}/edit(id=${patient.id})}">Edit</a>
+                &nbsp; &nbsp; &nbsp;
+                <a class="btn btn-primary" th:href="@{/ui/patients/{id}/delete(id=${patient.id})}">Delete</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

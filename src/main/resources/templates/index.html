@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+	<header th:replace="fragments :: header"></header>
+	<div class="col-sm-4 offset-md-4">
+		<h3 th:text="'welcome to hospital management'"></h3>
+		<div th:if="${param.success}" class="alert alert-success">
+			Successfully registered!
+		</div>
+	</div>
+	<footer th:replace="fragments :: footer"></footer>
+</body>
+
+</html>

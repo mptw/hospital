@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+  <header th:replace="fragments :: header"></header>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4 offset-md-4">
+        <h3>Create room</h3>
+        <form th:action="@{/ui/rooms/create}" th:object="${room}" method="post">
+
+          <div class="mb-3">
+            <select items="${types}" class="form-control" id="type" name="type" th:field="*{type}"
+              placeholder="Room type">
+              <option value="ICU">ICU</option>
+              <option value="ER">ER</option>
+              <option value="OR">OR</option>
+              <option value="REGULAR">REGULAR</option>
+            </select>
+            <p th:if="${#fields.hasErrors('type')}" class="text-danger" th:errors="*{type}"></p>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

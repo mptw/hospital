@@ -28,7 +28,16 @@ public class DoctorServiceImpl implements DoctorService {
 
 	@Autowired
 	private WardRepository wardRepository;
-
+	/*
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private PersonService personService;
+*/
 	@Autowired
 	private JWTGenerator tokenGenerator;
 
@@ -38,7 +47,7 @@ public class DoctorServiceImpl implements DoctorService {
 				.orElseThrow(() -> new EntityNotFoundException("Doctor with id: " + id + " could not be retrieved"));
 		return mapToDto(doctor);
 	}
-
+	
 	@Override
 	public ListResponseDto getDoctors(int pageNo, int pageSize) {
 		Pageable pageable = PageRequest.of(pageNo, pageSize);
@@ -81,10 +90,10 @@ public class DoctorServiceImpl implements DoctorService {
 		Doctor doctorToUpdate = doctorRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Doctor with id: " + id + " could not be updated"));
 
-		doctorToUpdate.setAge(doctorDto.getAge());
-		doctorToUpdate.setFirstName(doctorDto.getFirstName());
-		doctorToUpdate.setLastName(doctorDto.getLastName());
-		doctorToUpdate.setNumber(doctorDto.getNumber());
+		doctorToUpdate.getPersonInfo().setAge(doctorDto.getAge());
+		doctorToUpdate.getPersonInfo().setFirstName(doctorDto.getFirstName());
+		doctorToUpdate.getPersonInfo().setLastName(doctorDto.getLastName());
+		doctorToUpdate.getPersonInfo().setNumber(doctorDto.getNumber());
 		doctorToUpdate.setQualification(doctorDto.getQualification());
 
 		int wardId = doctorDto.getWardId();
@@ -100,9 +109,39 @@ public class DoctorServiceImpl implements DoctorService {
 	@Override
 	public DoctorDto create(DoctorDto doctorDto) {
 		Doctor doctor = mapToEntity(doctorDto);
+		//UserEntity user = getUserEntity(doctorDto);
+		//doctor.getPersonInfo().setUserEntity(saveAndReturnUserEntity(user));
+		//doctor.setPersonInfo(getPersonInfo(doctor.getPersonInfo().getUserEntity(), doctorDto));
+		
 		Doctor createdDoctor = doctorRepository.save(doctor);
 		return mapToDto(createdDoctor);
 	}
+	
+	/*
+	private UserEntity getUserEntity(DoctorDto doctorDto) {
+		UserEntity user = new UserEntity();
+		user.setUsername(doctorDto.getUsername());	
+		user.setPassword(doctorDto.getPassword());
+		Role role = roleRepository.findByType(RoleType.DOCTOR).get();	
+		user.setRole(role);
+		return user;
+	}
+	
+	private UserEntity saveAndReturnUserEntity(UserEntity user) {
+		userService.saveUser(user);
+		return userService.findByUsername(user.getUsername()).get();
+	}
+	
+	private PersonInfo getPersonInfo(UserEntity user, DoctorDto doctorDto) {
+		PersonInfo person = new PersonInfo();
+		person.setFirstName(doctorDto.getFirstName());
+		person.setLastName(doctorDto.getLastName());
+		person.setAge(doctorDto.getAge());
+		person.setNumber(doctorDto.getNumber());
+		person.setUserEntity(user);
+
+		return personService.create(person);
+	}*/
 
 	@Override
 	public void delete(int id) throws EntityNotFoundException {
@@ -121,12 +160,12 @@ public class DoctorServiceImpl implements DoctorService {
 
 	private DoctorDto mapToDto(Doctor doctor) {
 		DoctorDto doctorDto = new DoctorDto();
-
+		
 		doctorDto.setId(doctor.getId());
-		doctorDto.setAge(doctor.getAge());
-		doctorDto.setFirstName(doctor.getFirstName());
-		doctorDto.setLastName(doctor.getLastName());
-		doctorDto.setNumber(doctor.getNumber());
+		doctorDto.setAge(doctor.getPersonInfo().getAge());
+		doctorDto.setFirstName(doctor.getPersonInfo().getFirstName());
+		doctorDto.setLastName(doctor.getPersonInfo().getLastName());
+		doctorDto.setNumber(doctor.getPersonInfo().getNumber());
 		doctorDto.setQualification(doctor.getQualification());
 
 		Ward ward = doctor.getWard();
@@ -139,10 +178,10 @@ public class DoctorServiceImpl implements DoctorService {
 	private Doctor mapToEntity(DoctorDto doctorDto) {
 		Doctor doctor = new Doctor();
 
-		doctor.setAge(doctorDto.getAge());
-		doctor.setFirstName(doctorDto.getFirstName());
-		doctor.setLastName(doctorDto.getLastName());
-		doctor.setNumber(doctorDto.getNumber());
+		doctor.getPersonInfo().setAge(doctorDto.getAge());
+		doctor.getPersonInfo().setFirstName(doctorDto.getFirstName());
+		doctor.getPersonInfo().setLastName(doctorDto.getLastName());
+		doctor.getPersonInfo().setNumber(doctorDto.getNumber());
 		doctor.setQualification(doctorDto.getQualification());
 
 		int wardId = doctorDto.getWardId();

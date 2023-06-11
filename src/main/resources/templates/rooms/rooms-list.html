@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments :: head">
+</head>
+
+<body>
+  <hearder th:replace="fragments :: header"></hearder>
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>Rooms</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <a class="btn btn-primary" th:href="@{/ui/rooms/create}">Create rooms</a>
+      </div>
+    </div>
+
+    &nbsp;
+
+    <div class="row" th:unless="${rooms} and ${rooms.size()}">
+      <div class="col-sm-12">
+        <div class="alert alert-danger">No rooms</div>
+      </div>
+    </div>
+
+    &nbsp;
+
+    <div class="row" th:if="${rooms.size() > 0}">
+      <div class="col-sm-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">type</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="room : ${rooms}">
+              <td th:text="${room.id}"></td>
+              <td th:text="${room.type}"></td>
+              <td>
+                <a class="btn btn-primary" th:href="@{/ui/rooms/{id}/edit(id=${room.id})}">Edit</a>
+                &nbsp; &nbsp; &nbsp;
+                <a class="btn btn-primary" th:href="@{/ui/rooms/{id}/delete(id=${room.id})}">Delete</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

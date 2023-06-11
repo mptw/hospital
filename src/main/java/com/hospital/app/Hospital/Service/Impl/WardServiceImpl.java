@@ -105,7 +105,7 @@ public class WardServiceImpl implements WardService{
 
 		Doctor headDoctor = ward.getHeadDoctor();
 		if (headDoctor != null) {
-			wardDto.setHeadDoctorId(headDoctor.getId());
+			wardDto.setHeadDoctorId(headDoctor.getPersonInfo().getId());
 		}
 		
 		return wardDto;

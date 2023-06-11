@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+    <header th:replace="fragments :: header"></header>
+    <div class="col-md-6 col-sm-12">
+        <h1 th:text="Register"></h1>
+        <div th:if="${param.fail}" class="alert alert-success">
+            Username already exists</div>
+        <div class="login-form">
+            <form method="post" role="form" th:action="@{/register/save}">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-control" placeholder="Username" th:field="*{user.username}">
+                </div>
+                <p th:if="${#fields.hasErrors('user.username')}" class="text-danger"></p>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" placeholder="Password" th:field="*{user.password}">
+                </div>
+                <p th:if="${#fields.hasErrors('user.password')}" class="text-danger"></p>
+
+                <div class="mb-3">
+                    <select items="${roleTypes}" class="form-control" id="user.wantedRole.type" name="user.wantedRole.type"
+                        th:field="*{user.wantedRole.type}" placeholder="Role Type">
+                        <!--  <option value="ANNONYMOUS">ANNONYMOUS</option>
+                           <option value="ADMIN" sec:authorize="hasAnyAuthority('ADMIN')">ADMIN</option> -->
+                        <option value="ADMIN">ADMIN</option>
+                        <option value="DIRECTOR">DIRECTOR</option>
+                        <option value="DOCTOR">DOCTOR</option>
+                        <option value="STAFF">STAFF</option>
+                        <option value="PATIENT">PATIENT</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+            <input type="text" class="form-control" id="firstName" name="person.firstName" th:field="*{person.firstName}"
+              placeholder="FirstName">
+            <p th:if="${#fields.hasErrors('person.firstName')}" class="text-danger" th:errors="*{person.firstName}"></p>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="lastName" name="person.lastName" th:field="*{person.lastName}"
+              placeholder="LastName">
+            <p th:if="${#fields.hasErrors('person.lastName')}" class="text-danger" th:errors="*{person.lastName}"></p>
+          </div>
+          <div class="mb-3">
+            <input type="number" class="form-control" id="age" name="person.age" th:field="*{person.age}" placeholder="Age">
+            <p th:if="${#fields.hasErrors('person.age')}" class="text-danger" th:errors="*{person.age}"></p>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="phoneNumber" name="person.number" th:field="*{person.number}"
+              placeholder="PhoneNumber">
+            <p th:if="${#fields.hasErrors('person.number')}" class="text-danger" th:errors="*{person.number}"></p>
+          </div>
+                
+
+                <a class="btn btn-primary" th:href="@{/login}">Login instead</a>
+                <button th:href="@{/register}" type="submit" class="btn btn-secondary">Register</button>
+            </form>
+        </div>
+        <footer th:replace="fragments :: footer"></footer>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+  <header th:replace="fragments :: header"></header>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4 offset-md-4">
+        <h3>Edit appointment</h3>
+
+        <div th:if="${param.error}" class="alert alert-danger">
+          Appointment date must be during wokring hours!
+        </div>
+
+        <form th:action="@{/ui/appointments/{appointmentId}/edit(appointmentId=${appointment.id})}"
+          th:object="${appointment}" method="post">
+          <input type="hidden" th:field="*{id}">
+
+
+          <div class="mb-3">
+            <input type="datetime-local" class="form-control" id="date" name="date" th:field="*{date}"
+              placeholder="Date">
+            <p th:if="${#fields.hasErrors('date')}" class="text-danger" th:errors="*{date}"></p>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="doctorId" name="doctorId" th:field="*{doctorId}"
+              placeholder="doctorId">
+            <p th:if="${#fields.hasErrors('doctorId')}" class="text-danger" th:errors="*{doctorId}"></p>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="patientId" name="patientId" th:field="*{patientId}"
+              placeholder="patientId">
+            <p th:if="${#fields.hasErrors('patientId')}" class="text-danger" th:errors="*{patientId}"></p>
+          </div>
+
+
+          <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments :: head"></head>
+
+<body>
+  <header th:replace="fragments :: header"></header>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4 offset-md-4">
+        <h3>Edit appointment</h3>
+        <form th:action="@{/ui/appointments/{appointmentId}/edit(appointmentId=${appointment.id})}"
+          th:object="${appointment}" method="post">
+          <input type="hidden" th:field="*{id}">
+
+          <div class="mb-3">
+            <input type="datetime-local" class="form-control" id="startDate" name="startDate" th:field="*{startDate}"
+              placeholder="Start Date">
+            <p th:if="${#fields.hasErrors('startDate')}" class="text-danger" th:errors="*{startDate}"></p>
+          </div>
+          <div class="mb-3">
+            <input type="datetime-local" class="form-control" id="endDate" name="endDate" th:field="*{endDate}"
+              placeholder="End Date">
+            <p th:if="${#fields.hasErrors('endDate')}" class="text-danger" th:errors="*{endDate}"></p>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="pricePerDay" name="pricePerDay" th:field="*{pricePerDay}"
+              placeholder="pricePerDay">
+            <p th:if="${#fields.hasErrors('pricePerDay')}" class="text-danger" th:errors="*{pricePerDay}"></p>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="patientId" name="patientId" th:field="*{patientId}"
+              placeholder="patientId">
+            <p th:if="${#fields.hasErrors('patientId')}" class="text-danger" th:errors="*{patientId}"></p>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="roomId" name="roomId" th:field="*{roomId}" placeholder="roomId">
+            <p th:if="${#fields.hasErrors('roomId')}" class="text-danger" th:errors="*{roomId}"></p>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

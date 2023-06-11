@@ -25,7 +25,7 @@ public class Appointment {
 	public int id;
 
 	@Column
-	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
+	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
 	private Date date;
 
 	@ManyToOne

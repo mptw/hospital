@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head">
+</head>
+
+<body>
+    <header th:replace="fragments :: header"></header>
+    <div class="container col-9">
+        <div class="alert alert-danger">
+            Unfortunately, you do not have the needed permissions to view this content- consider logging in or
+            registering.
+        </div>
+    </div>
+    <footer th:replace="fragments :: footer"></footer>
+</body>
+
+</html>

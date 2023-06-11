@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="fragments :: head">
+</head>
+
+<body>
+  <hearder th:replace="fragments :: header"></hearder>
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>Doctors</h1>
+      </div>
+    </div>
+
+    <div class="row" sec:authorize="hasAnyAuthority('ADMIN')">
+      <div class="col-sm-12">
+        <a class="btn btn-primary" th:href="@{/ui/doctors/create}">Create Doctor</a>
+      </div>
+    </div>
+
+    &nbsp;
+
+    <div class="row" th:unless="${doctors} and ${doctors.size()}">
+      <div class="col-sm-12">
+        <div class="alert alert-danger">No doctors</div>
+      </div>
+    </div>
+
+    &nbsp;
+
+    <div class="row" th:if="${doctors.size() > 0}">
+      <div class="col-sm-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">firstName</th>
+              <th scope="col">lastName</th>
+              <th scope="col">age</th>
+              <th scope="col">qualification</th>
+              <th scope="col">number</th>
+              <th scope="col">ward id</th>
+              <th scope="col" sec:authorize="hasAnyAuthority('ADMIN')">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="doctor : ${doctors}">
+              <td th:text="${doctor.id}"></td>
+              <td th:text="${doctor.firstName}"></td>
+              <td th:text="${doctor.lastName}"></td>
+              <td th:text="${doctor.age}"></td>
+              <td th:text="${doctor.qualification}"></td>
+              <td th:text="${doctor.number}">
+              <td th:text="${doctor.wardId}"></td>
+              <td sec:authorize="hasAnyAuthority('ADMIN')">
+                <a class="btn btn-primary" th:href="@{/ui/doctors/{id}/edit(id=${doctor.id})}" >Edit</a>
+                &nbsp; &nbsp; &nbsp;
+                <a class="btn btn-primary" th:href="@{/ui/doctors/{id}/delete(id=${doctor.id})}">Delete</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

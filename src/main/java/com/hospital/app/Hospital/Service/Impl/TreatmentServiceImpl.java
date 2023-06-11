@@ -18,7 +18,7 @@ import com.hospital.app.Hospital.Repository.PatientRepository;
 import com.hospital.app.Hospital.Repository.RoomRepository;
 import com.hospital.app.Hospital.Repository.TreatmentRepository;
 import com.hospital.app.Hospital.Security.JWTGenerator;
-import com.hospital.app.Hospital.Security.TreatmentService;
+import com.hospital.app.Hospital.Service.TreatmentService;
 import com.hospital.app.Hospital.dto.ListResponseDto;
 import com.hospital.app.Hospital.dto.TreatmentDto;
 

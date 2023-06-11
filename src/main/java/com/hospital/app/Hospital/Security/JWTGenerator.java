@@ -51,9 +51,13 @@ public class JWTGenerator {
 	}
 
 	public boolean doesLoggedInUserHaveNeededRole(RoleType role) {
+
 		String userRoleType = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
 				.findFirst().get().toString();
 
+		if (userRoleType.equals("ROLE_ANONYMOUS")) {
+			return false;
+		}
 		int requiredRoleInd = Arrays.asList(RoleType.values()).indexOf(role);
 		int userRoleInd = Arrays.asList(RoleType.values()).indexOf(RoleType.valueOf(userRoleType));
 

@@ -1,5 +1,7 @@
 package com.hospital.app.Hospital.Model;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,8 +17,13 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name= "Roles")
-public class Role {
+public class Role implements GrantedAuthority {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
@@ -27,5 +34,10 @@ public class Role {
 	
 	public String getName() {
 		return type.name();
+	}
+
+	@Override
+	public String getAuthority() {
+		return this.getName();
 	}
 }
