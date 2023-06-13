@@ -10,9 +10,10 @@
       <div class="col-sm-4 offset-md-4">
         <h3>Create appointment</h3>
 
-        <div th:if="${param.error}" class="alert alert-danger">
-          Appointment date must be during wokring hours!
-        </div>
+	<div th:if="${param.error}" class="alert alert-danger">
+      Choose another appointment date!
+    </div>
+        
         <form th:action="@{/ui/appointments/create}" th:object="${appointment}" method="post">
 
           <div class="mb-3">

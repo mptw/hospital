@@ -64,7 +64,8 @@ public class PatientViewController {
 							.getContent();
 				}
 			} else if (userRoleType.equals(RoleType.ADMIN.toString())
-					|| userRoleType.equals(RoleType.DIRECTOR.toString())) {
+					|| userRoleType.equals(RoleType.DIRECTOR.toString())
+					|| userRoleType.equals(RoleType.STAFF.toString())) {
 				patients = (List<PatientDto>) patientService.getPatients(0, 100).getContent();
 			}
 			model.addAttribute("patients", patients);

@@ -86,8 +86,13 @@ public class AppointmentController {
 	@PostMapping
 	public ResponseEntity<AppointmentDto> saveAppointment(@RequestBody AppointmentDto appointmentDto) {
 		if (appointmentService.checkPermissions()) {
-			AppointmentDto createdAppointment = appointmentService.create(appointmentDto);
-			return ResponseEntity.status(HttpStatus.OK).body(createdAppointment);
+			AppointmentDto createdAppointment;
+			try {
+				createdAppointment = appointmentService.create(appointmentDto);
+				return ResponseEntity.status(HttpStatus.OK).body(createdAppointment);
+			} catch (RuntimeException e) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			}
 		} else
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}

@@ -11,7 +11,7 @@
         <h3>Edit appointment</h3>
 
         <div th:if="${param.error}" class="alert alert-danger">
-          Appointment date must be during wokring hours!
+          Choose another appointment date!
         </div>
 
         <form th:action="@{/ui/appointments/{appointmentId}/edit(appointmentId=${appointment.id})}"

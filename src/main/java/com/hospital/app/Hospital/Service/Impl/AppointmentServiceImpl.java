@@ -1,8 +1,10 @@
 package com.hospital.app.Hospital.Service.Impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,13 +137,33 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public AppointmentDto create(AppointmentDto appointmentDto) {
 		Appointment appointment = mapToEntity(appointmentDto);
 
-		// TODO DOESNT SIOPT EXC
-		if (isDateInWorkingHours(appointmentDto.getDate())) {
+		if (!isDateInWorkingHours(appointmentDto.getDate())) {
 			throw new RuntimeException("Appointment time should be in wokring hours!");
+		} else if (isAlreadyTaken(appointmentDto)) {
+			throw new RuntimeException("Choose another time for the apointment!");
 		}
 
 		Appointment createdAppointment = appointmentRepository.save(appointment);
 		return mapToDto(createdAppointment);
+	}
+
+	private boolean isAlreadyTaken(AppointmentDto appointmentDto) {
+		@SuppressWarnings("unchecked")
+		List<AppointmentDto> apointments = (List<AppointmentDto>) getAppointmentsWithDoctor(
+				appointmentDto.getDoctorId(), 0, 100).getContent();
+		int numberOfInterlappingAppointments = apointments.stream()
+				.filter(a -> appointmentsAreAtSameTime(a.getDate(), appointmentDto.getDate())).toList().size();
+		return numberOfInterlappingAppointments > 0;
+	}
+
+	private boolean appointmentsAreAtSameTime(Date oldAppointment, Date newAppointment) {
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
+		if (fmt.format(oldAppointment).equals(fmt.format(newAppointment))) {
+			long duration = oldAppointment.getTime() - newAppointment.getTime();
+			long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration);
+			return Math.abs(diffInMinutes) <= 60;
+		}
+		return false;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -153,7 +175,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 				|| (appointmentDate.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)) {
 			return false;
 		}
-		if (date.getHours() < 8 || date.getHours() + 1 >= 6) {
+		if (date.getHours() < 8 || date.getHours() + 1 >= 18) {
 			return false;
 		}
 		return true;

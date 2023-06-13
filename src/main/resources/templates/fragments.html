@@ -56,7 +56,7 @@ and open the template in the editor.
                         <a class="nav-link" href="/ui/patients">Patients</a>
                     </li>
                 </div>
-                <div sec:authorize="hasAnyAuthority('ADMIN','DIRECTOR','DOCTOR','STAFF')">
+                <div sec:authorize="hasAnyAuthority('ADMIN','DIRECTOR','DOCTOR')">
                     <li class="nav-item">
                         <a class="nav-link" href="/ui/wards">Wards</a>
                     </li>
@@ -66,12 +66,12 @@ and open the template in the editor.
                         <a class="nav-link" href="/ui/rooms">Rooms</a>
                     </li>
                 </div>
-                <div sec:authorize="hasAnyAuthority('ADMIN','DIRECTOR','DOCTOR','STAFF','PATIENT')">
+                <div sec:authorize="hasAnyAuthority('ADMIN','DIRECTOR','DOCTOR','PATIENT')">
                     <li class="nav-item">
                         <a class="nav-link" href="/ui/treatments">Treatments</a>
                     </li>
                 </div>
-                <div sec:authorize="hasAnyAuthority('ADMIN','DIRECTOR','DOCTOR','STAFF','PATIENT')">
+                <div sec:authorize="hasAnyAuthority('ADMIN','DIRECTOR','DOCTOR','PATIENT')">
                     <li class="nav-item">
                         <a class="nav-link" href="/ui/appointments">Appointments</a>
                     </li>

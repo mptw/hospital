@@ -34,10 +34,10 @@ public class AppointmentViewController {
 
 	@Autowired
 	private AppointmentService appointmentService;
-	
+
 	@Autowired
 	private DoctorService doctorService;
-	
+
 	@Autowired
 	private PatientService patientService;
 
@@ -79,7 +79,7 @@ public class AppointmentViewController {
 					|| userRoleType.equals(RoleType.DIRECTOR.toString())) {
 				appointments = (List<AppointmentDto>) appointmentService.getAppointments(0, 100).getContent();
 			}
-			
+
 			model.addAttribute("appointments", appointments);
 			return "/appointments/appointments-list";
 		} else
@@ -131,7 +131,7 @@ public class AppointmentViewController {
 			appointmentService.update(id, appointmentDto);
 		} catch (RuntimeException ex) {
 			model.addAttribute("appointment", appointmentDto);
-			return "/appointments/appointments-create?error";
+			return "/appointments/appointments-edit?error";
 		}
 		return "redirect:/ui/appointments";
 	}
@@ -151,7 +151,7 @@ public class AppointmentViewController {
 			BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			model.addAttribute("appointment", appointmentDto);
-			return "/appointments/appointments-create";
+			return "/appointments/appointments-create?error";
 		}
 		try {
 			appointmentService.create(appointmentDto);
